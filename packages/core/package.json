@@ -1,0 +1,66 @@
+{
+  "name": "@verbosia/core",
+  "version": "0.1.0",
+  "description": "Engine agnóstico de framework para tradução com IA + Translation Memory. Núcleo do Verbosia.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
+    "@google/genai": "^0.14.0",
+    "openai": "^4.104.0",
+    "redis": "^4.7.0"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/sdk": ">=0.30.0",
+    "@google/genai": ">=0.10.0",
+    "openai": ">=4.0.0",
+    "redis": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@anthropic-ai/sdk": {
+      "optional": true
+    },
+    "@google/genai": {
+      "optional": true
+    },
+    "openai": {
+      "optional": true
+    },
+    "redis": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edbentto22/verbosia.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/edbentto22/verbosia#readme",
+  "bugs": "https://github.com/edbentto22/verbosia/issues",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sideEffects": false
+}

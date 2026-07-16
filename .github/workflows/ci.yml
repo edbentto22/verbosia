@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+      # A CLI funciona sem chave de API para comandos offline (status/dry-run).
+      - name: Smoke test da CLI no exemplo
+        working-directory: examples/blog-pt
+        run: |
+          node ../../packages/cli/dist/cli.js status
+          node ../../packages/cli/dist/cli.js translate --dry-run

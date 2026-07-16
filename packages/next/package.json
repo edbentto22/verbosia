@@ -1,0 +1,47 @@
+{
+  "name": "@verbosia/next",
+  "version": "0.1.0",
+  "description": "Helpers Next.js do Verbosia: metadata alternates (hreflang/canonical) para o App Router; tradução roda via CLI no prebuild.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "nextjs",
+    "i18n",
+    "translation",
+    "seo",
+    "hreflang"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@verbosia/core": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edbentto22/verbosia.git",
+    "directory": "packages/next"
+  },
+  "homepage": "https://github.com/edbentto22/verbosia#readme",
+  "bugs": "https://github.com/edbentto22/verbosia/issues",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sideEffects": false
+}

@@ -1,0 +1,72 @@
+{
+  "0b80afd15f836a34f84f79ae5cc07d8276fe0828b6e3abece8a3b9b9d914f1f5": {
+    "text": "You have {vagas} spots available for this date.",
+    "model": "claude-sonnet-5",
+    "ts": 1784204182841
+  },
+  "231da1a958ec0334d8efa529e2dd1c8a9cf9b47d4bc9fb3e8e272d74f3aca566": {
+    "text": "The **Chapada Diamantina** is one of the most beautiful destinations in Brazil.",
+    "model": "claude-sonnet-5",
+    "ts": 1784204182808
+  },
+  "46a0dd0ed56cc606040c7e86c92c9aa1f66b13f458cedf7b7e3589b0618ae06a": {
+    "text": "A weekend in Chapada Diamantina",
+    "model": "gpt-4o",
+    "ts": 1784204347097
+  },
+  "68397b157f615770a13a4b40836af4b68ac5ab31f977c6449248ea24dd0e378d": {
+    "text": "Book through [our page](https://exemplo.com/reservas) or run `npm run book`.",
+    "model": "gpt-4o",
+    "ts": 1784204347096
+  },
+  "6d2426f78264e64233ae31055aeab129674ab495a1d44519db612c08ed7f3a64": {
+    "text": "La **Chapada Diamantina** es uno de los destinos más bonitos de Brasil.\n\nReserve por [nuestra página](https://exemplo.com/reservas) o llame `npm run book`.\n\nTiene {vagas} plazas disponibles para esta fecha.",
+    "model": "gpt-4o",
+    "ts": 1784160496139
+  },
+  "794b5eb248ca557fab0576b2835cc9d9dc0e9a1e5bfc5f99249b7255ba40ad64": {
+    "text": "You have {vagas} spots available for this date.",
+    "model": "gpt-4o",
+    "ts": 1784204347097
+  },
+  "acbe7e634464952609d91780c21e03da224b3fe7a4db847af52333f8b1f5e990": {
+    "text": "Itinerario de 3 días saliendo de la Pousada Mirante de Lençóis.",
+    "model": "gpt-4o",
+    "ts": 1784160497516
+  },
+  "b3b4ca8d9af132b2476dfac1d3137d18cb3e3c35a50cce4d1c3d1a15aa1f612e": {
+    "text": "3-day itinerary starting from Pousada Mirante de Lençóis.",
+    "model": "gpt-4o",
+    "ts": 1784204347097
+  },
+  "b6e41bd5d02b3881d5c1a79a6665ae02e5573375842aa61c1e3ac8d46ebcd278": {
+    "text": "The **Chapada Diamantina** is one of the most beautiful destinations in Brazil.\n\nBook through [our page](https://exemplo.com/reservas) or call `npm run book`.\n\nYou have {vagas} spots available for this date.",
+    "model": "gpt-4o",
+    "ts": 1784160492709
+  },
+  "bc8e5eb41d6d7aba578c0af6063a14e508d9baa3db7b036fcb2de18e0eba0723": {
+    "text": "Book through [our page](https://exemplo.com/reservas) or run `npm run book`.",
+    "model": "claude-sonnet-5",
+    "ts": 1784204182831
+  },
+  "c37b49eb708d5bca615d657cb9c3efd36e82ab78e25ded1d94b98abe8b7c3477": {
+    "text": "A weekend in Chapada Diamantina",
+    "model": "claude-sonnet-5",
+    "ts": 1784204182843
+  },
+  "d6959ca0d141e4f305c6309bf557292a8e1426007cfefab92b499b8712200c58": {
+    "text": "3-day itinerary starting from Pousada Mirante de Lençóis.",
+    "model": "claude-sonnet-5",
+    "ts": 1784204182844
+  },
+  "dd1300bee96a891193c637ba3e24da96dbe12b966639704054ec7cadbda3b926": {
+    "text": "Un fin de semana en la Chapada Diamantina",
+    "model": "gpt-4o",
+    "ts": 1784160496770
+  },
+  "e8e4549151d92b182c303db4472987189cd9a4bc2749370aabbf71abf52abb6a": {
+    "text": "The **Chapada Diamantina** is one of the most beautiful destinations in Brazil.",
+    "model": "gpt-4o",
+    "ts": 1784204347094
+  }
+}

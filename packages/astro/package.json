@@ -1,0 +1,50 @@
+{
+  "name": "@verbosia/astro",
+  "version": "0.1.0",
+  "description": "Integração Astro do Verbosia: roda a tradução no build (TM) e injeta SEO multilíngue (hreflang, canonical, lang, sitemap).",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "astro-integration",
+    "astro-component",
+    "i18n",
+    "translation",
+    "seo"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@verbosia/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "astro": ">=4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edbentto22/verbosia.git",
+    "directory": "packages/astro"
+  },
+  "homepage": "https://github.com/edbentto22/verbosia#readme",
+  "bugs": "https://github.com/edbentto22/verbosia/issues",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sideEffects": false
+}

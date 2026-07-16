@@ -1,0 +1,47 @@
+{
+  "name": "@verbosia/eleventy",
+  "version": "0.1.0",
+  "description": "Plugin Eleventy do Verbosia: traduz o conteúdo antes do build (TM) e expõe filtros de SEO multilíngue (hreflang, sitemap).",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "eleventy-plugin",
+    "11ty",
+    "i18n",
+    "translation",
+    "seo"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@verbosia/core": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edbentto22/verbosia.git",
+    "directory": "packages/eleventy"
+  },
+  "homepage": "https://github.com/edbentto22/verbosia#readme",
+  "bugs": "https://github.com/edbentto22/verbosia/issues",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sideEffects": false
+}

@@ -1,0 +1,35 @@
+{
+  "name": "verbosia",
+  "version": "0.1.0",
+  "description": "CLI do Verbosia: traduz conteúdo estático com IA + Translation Memory. verbosia translate / status / prune / tm:sync.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "verbosia": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@verbosia/core": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edbentto22/verbosia.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/edbentto22/verbosia#readme",
+  "bugs": "https://github.com/edbentto22/verbosia/issues",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sideEffects": false
+}
