@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="./assets/verbosia-cover.png" alt="Verbosia — tradução com IA para sites estáticos" />
+</p>
+
+
 # Verbosia
 
 **Tradução com IA para sites estáticos — Astro-first, com Translation Memory e SEO de primeira classe.**
