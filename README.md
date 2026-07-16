@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/verbosia-cover.png" alt="Verbosia — tradução com IA para sites estáticos" />
+  <img src="/verbosia-cover.png" alt="Verbosia — tradução com IA para sites estáticos" />
 </p>
 
 
