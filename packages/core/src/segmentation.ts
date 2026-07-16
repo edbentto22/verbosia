@@ -1,3 +1,4 @@
+import { cloneFrontmatter, resolveFieldPaths, setPath } from './frontmatter-paths.js';
 import { mask, TOKENS } from './masking.js';
 import type { ResolvedConfig, Segment, SourceDocument, TranslatedSegment } from './types.js';
 
@@ -81,11 +82,10 @@ export function segment(doc: SourceDocument, config: ResolvedConfig): Segment[] 
     }
   }
 
-  for (const field of config.translateFields) {
-    const value = doc.frontmatter[field];
-    if (typeof value === 'string' && value.trim()) {
-      segments.push({ path: `frontmatter:${field}`, text: value });
-    }
+  // Campos de frontmatter: padrões com dot-notation e curinga * são expandidos
+  // para caminhos concretos (ex.: 'sections.*.heading' → 'sections.0.heading').
+  for (const match of resolveFieldPaths(doc.frontmatter, config.translateFields)) {
+    segments.push({ path: `frontmatter:${match.path}`, text: match.value });
   }
 
   return segments;
@@ -104,15 +104,19 @@ export function reassembleBody(translated: TranslatedSegment[]): string | null {
   return blocks.length ? blocks.join('\n\n') : null;
 }
 
-/** Reconstrói o frontmatter localizado: campos traduzidos + resto preservado. */
+/**
+ * Reconstrói o frontmatter localizado: campos traduzidos gravados no caminho
+ * concreto (aninhado ou não), resto preservado. Clone profundo — o frontmatter
+ * do doc de origem nunca é mutado (é compartilhado entre idiomas).
+ */
 export function localizedFrontmatter(
   doc: SourceDocument,
   translations: Map<string, string>,
 ): Record<string, unknown> {
-  const out: Record<string, unknown> = { ...doc.frontmatter };
+  const out = cloneFrontmatter(doc.frontmatter);
   for (const [path, translated] of translations) {
     if (path.startsWith('frontmatter:')) {
-      out[path.slice('frontmatter:'.length)] = translated;
+      setPath(out, path.slice('frontmatter:'.length), translated);
     }
   }
   return out;

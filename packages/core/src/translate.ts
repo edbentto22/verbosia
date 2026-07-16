@@ -4,6 +4,7 @@ import matter from 'gray-matter';
 import { FileCacheDriver, cacheDirFor, createCacheDrivers } from './cache-drivers/index.js';
 import { sourceHash } from './cache-key.js';
 import { discover } from './discovery.js';
+import { getPath } from './frontmatter-paths.js';
 import { CallBudget, mapLimit } from './limits.js';
 import { createProvider } from './providers/index.js';
 import { localizedFrontmatter, reassembleBody, segment } from './segmentation.js';
@@ -187,7 +188,7 @@ async function writeLocalized(
     if (prevVerba.reviewed === true) {
       const sameBody = prev.content.trim() === body.trim();
       const sameFields = [...fieldMap.entries()].every(
-        ([path, value]) => prev.data?.[path.slice('frontmatter:'.length)] === value,
+        ([path, value]) => getPath(prev.data ?? {}, path.slice('frontmatter:'.length)) === value,
       );
       if (sameBody && sameFields) {
         reviewed = true;

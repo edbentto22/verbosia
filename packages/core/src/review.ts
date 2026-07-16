@@ -3,6 +3,7 @@ import matter from 'gray-matter';
 import { cacheKey, glossaryVersion } from './cache-key.js';
 import { FileCacheDriver, createCacheDrivers } from './cache-drivers/index.js';
 import { discover } from './discovery.js';
+import { getPath, resolveFieldPaths, setPath } from './frontmatter-paths.js';
 import { segment, splitBody } from './segmentation.js';
 import { localizedPath } from './translate.js';
 import type { CacheDriver, ResolvedConfig, Segment, SourceDocument } from './types.js';
@@ -43,11 +44,11 @@ export interface ReviewReport {
   tmSkipped: boolean;
 }
 
+/** Campos traduzíveis como Record<caminho concreto, valor> (aninhados inclusos). */
 function fieldsOf(doc: SourceDocument, config: ResolvedConfig): Record<string, string> {
   const out: Record<string, string> = {};
-  for (const f of config.translateFields) {
-    const v = doc.frontmatter[f];
-    if (typeof v === 'string') out[f] = v;
+  for (const m of resolveFieldPaths(doc.frontmatter, config.translateFields)) {
+    out[m.path] = m.value;
   }
   return out;
 }
@@ -72,10 +73,12 @@ export async function getReviewDoc(
   try {
     const raw = await readFile(localizedPath(doc, targetLang, config), 'utf8');
     const parsed = matter(raw);
+    // Lê no arquivo localizado os MESMOS caminhos concretos da origem
+    // (o shape do frontmatter localizado espelha o da origem).
     const fields: Record<string, string> = {};
-    for (const f of config.translateFields) {
-      const v = parsed.data?.[f];
-      if (typeof v === 'string') fields[f] = v;
+    for (const path of Object.keys(source.fields)) {
+      const v = getPath(parsed.data ?? {}, path);
+      if (typeof v === 'string') fields[path] = v;
     }
     const verbosia = (parsed.data?.verbosia ?? {}) as { reviewed?: boolean };
     translated = { body: parsed.content.trim(), fields, reviewed: verbosia.reviewed === true };
@@ -165,9 +168,9 @@ export async function applyReview(
       tmSkipped = true; // revisor mudou a estrutura de parágrafos
     }
 
-    // 2. Campos de frontmatter.
+    // 2. Campos de frontmatter (chaves são caminhos concretos, ex.: 'hero.title').
     for (const [field, edited] of Object.entries(input.fields)) {
-      const sourceValue = doc.frontmatter[field];
+      const sourceValue = getPath(doc.frontmatter, field);
       if (typeof sourceValue === 'string' && sourceValue.trim() && edited.trim()) {
         tmUpdated += await setTM(drivers, config, sourceValue, input.targetLang, models, edited);
       }
@@ -179,8 +182,8 @@ export async function applyReview(
   }
 
   // 3. Grava o arquivo revisado, preservando o restante do frontmatter.
-  const data = { ...existing.data };
-  for (const [field, edited] of Object.entries(input.fields)) data[field] = edited;
+  const data = structuredClone(existing.data ?? {});
+  for (const [field, edited] of Object.entries(input.fields)) setPath(data, field, edited);
   data.verbosia = {
     ...(existing.data?.verbosia ?? {}),
     reviewed: input.reviewed,

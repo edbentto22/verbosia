@@ -24,8 +24,9 @@ export default {
   collections: ['blog', 'pages'],  // pastas sob contentDir; vazio = todas
   contentDir: 'src/content',       // raiz do conteúdo de origem
   outputDir: 'src/content',        // onde gravar <lang>/... (default: igual)
-  translateFields: ['title', 'description'],  // frontmatter a traduzir;
-                                               // o resto é preservado
+  translateFields: ['title', 'description'],  // frontmatter a traduzir; aceita
+                                               // aninhados: 'hero.title',
+                                               // 'sections.*.heading'
 
   // ─── Qualidade ────────────────────────────────────────────────────────
   glossary: ['Chapada Diamantina'],   // termos mantidos idênticos
@@ -79,6 +80,21 @@ Trocar a granularidade muda as chaves do corpo na TM — a primeira rodada após
 ### `translateFields`
 
 Só os campos listados são traduzidos. `slug`, `date`, `tags`, `author`, `image` e qualquer outro campo são copiados intactos. O bloco `verbosia:` de rastreio é gerenciado pelo próprio Verbosia.
+
+**Frontmatter aninhado** (páginas institucionais/landing pages): os padrões aceitam dot-notation e o curinga `*` (casa qualquer chave de objeto ou índice de array):
+
+```js
+// frontmatter:                          // config:
+// hero:                                 translateFields: [
+//   title: Transformamos ideias           'title',
+//   image: /hero.png                      'hero.title',
+// sections:                               'sections.*.heading',
+//   - heading: Consultoria                'sections.*.body',
+//     body: ...                         ]
+//   - heading: Desenvolvimento
+```
+
+Cada valor casado vira um segmento próprio na TM (editar um `heading` não retraduz os outros), e o resto da estrutura (`image`, ícones, números) é preservado byte a byte. Só folhas **string** são traduzíveis; chaves com ponto no nome não são endereçáveis. O editor de revisão mostra cada caminho concreto como um campo editável.
 
 ### `glossary` vs `doNotTranslate`
 
