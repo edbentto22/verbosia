@@ -19,9 +19,11 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+      # Build primeiro: os adapters resolvem @verbosia/core pelos tipos do
+      # dist (o pnpm builda na ordem de dependência do workspace).
+      - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
-      - run: pnpm build
 
       # A CLI funciona sem chave de API para comandos offline (status/dry-run).
       - name: Smoke test da CLI no exemplo
