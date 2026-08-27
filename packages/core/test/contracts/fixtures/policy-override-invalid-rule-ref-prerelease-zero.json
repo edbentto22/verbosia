@@ -1,0 +1,8 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-override.schema.json",
+  "caseId": "semver/rule-ref-leading-zero-prerelease",
+  "valid": false,
+  "instance": { "schemaVersion": "1.0.0", "overrideId": "bad-rule-ref", "ruleRef": "avoid-hype@1.0.0-01", "scope": {}, "effect": "warning", "justification": "Numeric prerelease identifiers cannot have leading zeroes.", "approvalRef": "approval-1", "validFrom": "2026-08-27T15:00:00Z" },
+  "expected": { "keyword": "pattern", "instancePath": "/ruleRef" }
+}

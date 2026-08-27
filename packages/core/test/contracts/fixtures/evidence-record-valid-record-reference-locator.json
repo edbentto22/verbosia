@@ -1,0 +1,13 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/evidence-record.schema.json",
+  "caseId": "evidence-locator/record-reference",
+  "valid": true,
+  "instance": {
+    "schemaVersion": "1.0.0", "evidenceId": "record-source", "recordedAt": "2026-08-27T15:00:00Z",
+    "source": { "sourceType": "record", "title": "Referenced record", "locator": { "type": "record_reference", "value": "source-record-1" }, "capturedAt": "2026-08-27T15:00:00Z", "sourceDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+    "provenance": { "originType": "first_party", "collectedAt": "2026-08-27T15:00:00Z" },
+    "permission": { "mode": "claim_support", "basis": "owned", "purpose": "Portable locator proof", "scope": {}, "attestedBy": "owner", "attestedAt": "2026-08-27T15:00:00Z", "restricted": false },
+    "supportRole": "direct", "scope": {}, "validity": { "validFrom": "2026-08-27T15:00:00Z" }, "sensitivity": "internal"
+  }
+}

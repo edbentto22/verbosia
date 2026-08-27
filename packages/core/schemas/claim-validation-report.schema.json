@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/claim-validation-report.schema.json",
+  "title": "ClaimValidationReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contractVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContractVersion" },
+    "evaluationTime": { "type": "string", "format": "date-time", "pattern": "\\.[0-9]{3}Z$" },
+    "policyEngineVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SemVer" },
+    "stateDigest": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Digest" },
+    "decisionDigest": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Digest" },
+    "outcome": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Outcome" },
+    "results": { "type": "array", "items": { "$ref": "#/$defs/ClaimValidationResult" } },
+    "diagnostics": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/diagnostic.schema.json" } }
+  },
+  "required": ["contractVersion", "evaluationTime", "policyEngineVersion", "stateDigest", "decisionDigest", "outcome", "results", "diagnostics"],
+  "$defs": {
+    "ClaimReasonCode": {
+      "title": "ClaimReasonCode",
+      "type": "string",
+      "enum": [
+        "CLAIM_UNKNOWN",
+        "CLAIM_AMBIGUOUS",
+        "CLAIM_DRAFT",
+        "CLAIM_SUSPENDED",
+        "CLAIM_RETIRED",
+        "KNOWN_PROHIBITION",
+        "DIRECT_EVIDENCE_MISSING",
+        "EVIDENCE_NOT_YET_VALID",
+        "EVIDENCE_EXPIRED",
+        "EVIDENCE_REVOKED",
+        "EVIDENCE_RESTRICTED",
+        "EVIDENCE_PERMISSION_DENIED",
+        "EVIDENCE_SCOPE_MISMATCH",
+        "EVIDENCE_QUARANTINED",
+        "EVIDENCE_UNAVAILABLE",
+        "POLICY_WARNING",
+        "POLICY_BLOCKING",
+        "HUMAN_REVIEW_REQUIRED"
+      ]
+    },
+    "ClaimValidationResult": {
+      "title": "ClaimValidationResult",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "candidateId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "claimId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/EmptyOrPortableId" },
+        "outcome": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Outcome" },
+        "reasonCodes": { "type": "array", "items": { "$ref": "#/$defs/ClaimReasonCode" }, "uniqueItems": true },
+        "constraints": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 2000 }, "uniqueItems": true },
+        "evidenceRefs": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" }, "uniqueItems": true }
+      },
+      "required": ["candidateId", "claimId", "outcome", "reasonCodes", "constraints", "evidenceRefs"]
+    }
+  },
+  "examples": [
+    {
+      "contractVersion": "1.0.0",
+      "evaluationTime": "2026-08-27T15:00:00.000Z",
+      "policyEngineVersion": "1.0.0",
+      "stateDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "decisionDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "outcome": "allow",
+      "results": [{ "candidateId": "candidate-1", "claimId": "read-only-integration", "outcome": "allow", "reasonCodes": [], "constraints": [], "evidenceRefs": ["launch-note-2026"] }],
+      "diagnostics": []
+    }
+  ]
+}

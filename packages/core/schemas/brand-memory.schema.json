@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/brand-memory.schema.json",
+  "title": "BrandMemory",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SchemaVersion" },
+    "brandId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "revision": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SemVer" },
+    "updatedAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+    "identity": { "$ref": "#/$defs/Identity" },
+    "voice": { "$ref": "#/$defs/Voice" },
+    "audiences": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Audience" },
+      "uniqueItems": true
+    },
+    "offerings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Offering" },
+      "uniqueItems": true
+    },
+    "differentiators": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Differentiator" },
+      "uniqueItems": true
+    },
+    "terminology": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Term" },
+      "uniqueItems": true
+    },
+    "restrictions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Restriction" },
+      "uniqueItems": true
+    },
+    "claims": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Claim" },
+      "uniqueItems": true
+    },
+    "editorialRiskMinimums": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/EditorialRiskMinimum" },
+      "uniqueItems": true
+    },
+    "overlays": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Overlay" },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "brandId",
+    "revision",
+    "updatedAt",
+    "identity",
+    "voice",
+    "audiences",
+    "offerings",
+    "differentiators",
+    "terminology",
+    "restrictions",
+    "claims",
+    "editorialRiskMinimums",
+    "overlays"
+  ],
+  "$defs": {
+    "Approval": {
+      "title": "ClaimApproval",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "approvedBy": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "approvedAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+        "reviewAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" }
+      },
+      "required": ["approvedBy", "approvedAt"]
+    },
+    "Audience": {
+      "title": "BrandAudience",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "audienceId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 2000 }
+      },
+      "required": ["audienceId", "label", "description"]
+    },
+    "Claim": {
+      "title": "BrandClaim",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "claimId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "statement": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "status": { "type": "string", "enum": ["draft", "approved", "suspended", "retired"] },
+        "evidenceIds": {
+          "type": "array",
+          "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+          "uniqueItems": true
+        },
+        "approval": { "$ref": "#/$defs/Approval" }
+      },
+      "required": ["claimId", "statement", "status", "evidenceIds"],
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "approved" } }, "required": ["status"] },
+          "then": { "properties": { "approval": { "$ref": "#/$defs/Approval" } }, "required": ["approval"] },
+          "else": { "not": { "properties": { "approval": {} }, "required": ["approval"] } }
+        }
+      ]
+    },
+    "Differentiator": {
+      "title": "BrandDifferentiator",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "differentiatorId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "statement": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "claimIds": {
+          "type": "array",
+          "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+          "uniqueItems": true
+        }
+      },
+      "required": ["differentiatorId", "statement", "claimIds"]
+    },
+    "EditorialRiskMinimum": {
+      "title": "EditorialRiskMinimum",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scope": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContextScope" },
+        "minimumRisk": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/EditorialRisk" }
+      },
+      "required": ["scope", "minimumRisk"]
+    },
+    "Identity": {
+      "title": "BrandIdentity",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "legalName": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "website": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/AbsoluteUri" }
+      },
+      "required": ["name"]
+    },
+    "Offering": {
+      "title": "BrandOffering",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "offeringId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "status": { "type": "string", "enum": ["active", "inactive"] }
+      },
+      "required": ["offeringId", "name", "description", "status"]
+    },
+    "Overlay": {
+      "title": "BrandOverlay",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "overlayId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "selector": { "$ref": "#/$defs/OverlaySelector" },
+        "patch": { "$ref": "#/$defs/OverlayPatch" }
+      },
+      "required": ["overlayId", "selector", "patch"]
+    },
+    "OverlayIdChanges": {
+      "title": "OverlayIdChanges",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "terminologyIds": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" }, "minItems": 1, "uniqueItems": true },
+        "ctaIds": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" }, "minItems": 1, "uniqueItems": true },
+        "exampleIds": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" }, "minItems": 1, "uniqueItems": true },
+        "claimIds": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" }, "minItems": 1, "uniqueItems": true }
+      }
+    },
+    "OverlayPatch": {
+      "title": "BrandOverlayPatch",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "set": { "$ref": "#/$defs/OverlayVoiceSet" },
+        "addIds": { "$ref": "#/$defs/OverlayIdChanges" },
+        "removeIds": { "$ref": "#/$defs/OverlayIdChanges" },
+        "addRestrictions": { "type": "array", "items": { "$ref": "#/$defs/Restriction" }, "minItems": 1, "uniqueItems": true },
+        "addCompliance": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 1000 }, "minItems": 1, "uniqueItems": true }
+      }
+    },
+    "OverlaySelector": {
+      "title": "BrandOverlaySelector",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "dimension": { "const": "locale" },
+            "value": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Bcp47Tag" }
+          },
+          "required": ["dimension", "value"]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "dimension": { "enum": ["market", "pageIntent", "contentType", "channel", "audience"] },
+            "value": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" }
+          },
+          "required": ["dimension", "value"]
+        }
+      ]
+    },
+    "OverlayVoiceSet": {
+      "title": "OverlayVoiceSet",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "toneTraits": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 200 }, "uniqueItems": true },
+        "avoidTraits": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 200 }, "uniqueItems": true },
+        "styleInstructions": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 1000 }, "uniqueItems": true }
+      }
+    },
+    "Restriction": {
+      "title": "BrandRestriction",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "restrictionId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "classification": { "type": "string", "enum": ["legal", "regulatory", "brand", "privacy", "safety"] },
+        "text": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "scope": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContextScope" }
+      },
+      "required": ["restrictionId", "classification", "text"]
+    },
+    "Term": {
+      "title": "BrandTerm",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "termId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "sourceTerm": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "preferred": { "type": "array", "items": { "$ref": "#/$defs/TermVariant" }, "uniqueItems": true },
+        "forbidden": { "type": "array", "items": { "$ref": "#/$defs/TermVariant" }, "uniqueItems": true }
+      },
+      "required": ["termId", "sourceTerm", "preferred", "forbidden"]
+    },
+    "TermVariant": {
+      "title": "BrandTermVariant",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "locale": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Bcp47Tag" },
+        "value": { "type": "string", "minLength": 1, "maxLength": 300 }
+      },
+      "required": ["locale", "value"]
+    },
+    "Voice": {
+      "title": "BrandVoice",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "toneTraits": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 200 }, "uniqueItems": true },
+        "avoidTraits": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 200 }, "uniqueItems": true },
+        "styleInstructions": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 1000 }, "uniqueItems": true }
+      },
+      "required": ["toneTraits", "avoidTraits", "styleInstructions"]
+    }
+  },
+  "examples": [
+    {
+      "schemaVersion": "1.0.0",
+      "brandId": "verbosia",
+      "revision": "1.0.0",
+      "updatedAt": "2026-08-27T15:00:00Z",
+      "identity": { "name": "Verbosia", "website": "https://verbosia.dev" },
+      "voice": { "toneTraits": ["clear"], "avoidTraits": ["hype"], "styleInstructions": ["Prefer verifiable statements."] },
+      "audiences": [],
+      "offerings": [],
+      "differentiators": [],
+      "terminology": [],
+      "restrictions": [],
+      "claims": [],
+      "editorialRiskMinimums": [],
+      "overlays": []
+    }
+  ]
+}

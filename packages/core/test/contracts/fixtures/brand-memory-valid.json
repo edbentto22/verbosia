@@ -1,0 +1,22 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/brand-memory.schema.json",
+  "caseId": "brand-memory/valid",
+  "valid": true,
+  "instance": {
+    "schemaVersion": "1.0.0",
+    "brandId": "verbosia",
+    "revision": "1.0.0",
+    "updatedAt": "2026-08-27T15:00:00Z",
+    "identity": { "name": "Verbosia", "website": "https://verbosia.dev" },
+    "voice": { "toneTraits": ["clear"], "avoidTraits": ["hype"], "styleInstructions": ["Prefer evidence."] },
+    "audiences": [],
+    "offerings": [],
+    "differentiators": [],
+    "terminology": [],
+    "restrictions": [],
+    "claims": [{ "claimId": "portable-contracts", "statement": "Contracts are portable.", "status": "approved", "evidenceIds": ["contract-tests"], "approval": { "approvedBy": "brand-owner", "approvedAt": "2026-08-27T15:00:00Z" } }],
+    "editorialRiskMinimums": [],
+    "overlays": []
+  }
+}

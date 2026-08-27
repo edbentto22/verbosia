@@ -1,0 +1,7 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/diagnostic.schema.json",
+  "caseId": "diagnostic/valid",
+  "valid": true,
+  "instance": { "severityRank": 2, "severity": "error", "code": "CONTRACT_SCHEMA_INVALID", "relativePath": "brand-memory.json", "jsonPointer": "/brandId", "claimId": "", "evidenceId": "", "message": "Invalid contract.", "remediation": "Correct it." }
+}

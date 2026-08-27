@@ -1,0 +1,8 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/inspect-brand-context-request.schema.json",
+  "caseId": "formats/bcp47-repeated-extension-singleton",
+  "valid": false,
+  "instance": { "contractVersion": "1.0.0", "locale": "en-u-ca-gregory-u-nu-latn" },
+  "expected": { "keyword": "format", "instancePath": "/locale" }
+}

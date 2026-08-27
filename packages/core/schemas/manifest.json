@@ -1,0 +1,72 @@
+{
+  "contractVersion": "1.0.0",
+  "namespace": "https://schemas.verbosia.dev/contracts/v1/",
+  "schemas": [
+    {
+      "name": "brand-memory",
+      "file": "brand-memory.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/brand-memory.schema.json",
+      "export": "./schemas/brand-memory"
+    },
+    {
+      "name": "claim-validation-report",
+      "file": "claim-validation-report.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/claim-validation-report.schema.json",
+      "export": "./schemas/claim-validation-report"
+    },
+    {
+      "name": "claim-validation-request",
+      "file": "claim-validation-request.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/claim-validation-request.schema.json",
+      "export": "./schemas/claim-validation-request"
+    },
+    {
+      "name": "common",
+      "file": "common.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/common.schema.json",
+      "export": "./schemas/common"
+    },
+    {
+      "name": "context-pack-contribution",
+      "file": "context-pack-contribution.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/context-pack-contribution.schema.json",
+      "export": "./schemas/context-pack-contribution"
+    },
+    {
+      "name": "diagnostic",
+      "file": "diagnostic.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/diagnostic.schema.json",
+      "export": "./schemas/diagnostic"
+    },
+    {
+      "name": "evidence-record",
+      "file": "evidence-record.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/evidence-record.schema.json",
+      "export": "./schemas/evidence-record"
+    },
+    {
+      "name": "inspect-brand-context-request",
+      "file": "inspect-brand-context-request.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/inspect-brand-context-request.schema.json",
+      "export": "./schemas/inspect-brand-context-request"
+    },
+    {
+      "name": "policy-override",
+      "file": "policy-override.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/policy-override.schema.json",
+      "export": "./schemas/policy-override"
+    },
+    {
+      "name": "policy-rule",
+      "file": "policy-rule.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json",
+      "export": "./schemas/policy-rule"
+    },
+    {
+      "name": "resolved-brand-context",
+      "file": "resolved-brand-context.schema.json",
+      "id": "https://schemas.verbosia.dev/contracts/v1/resolved-brand-context.schema.json",
+      "export": "./schemas/resolved-brand-context"
+    }
+  ]
+}

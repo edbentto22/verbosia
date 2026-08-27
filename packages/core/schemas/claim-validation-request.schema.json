@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/claim-validation-request.schema.json",
+  "title": "ClaimValidationRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contractVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContractVersion" },
+    "context": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContextDimensions" },
+    "candidates": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ClaimCandidate" },
+      "minItems": 1,
+      "maxItems": 100,
+      "uniqueItems": true
+    }
+  },
+  "required": ["contractVersion", "context", "candidates"],
+  "$defs": {
+    "ClaimCandidate": {
+      "title": "ClaimCandidate",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "candidateId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 8000 },
+        "claimIds": {
+          "type": "array",
+          "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+          "uniqueItems": true
+        }
+      },
+      "required": ["candidateId", "text", "claimIds"]
+    }
+  },
+  "examples": [
+    {
+      "contractVersion": "1.0.0",
+      "context": {
+        "locale": "en-US",
+        "market": "us",
+        "pageIntent": "product",
+        "contentType": "landing-page",
+        "channel": "website",
+        "audience": "developers",
+        "editorialRisk": "medium"
+      },
+      "candidates": [{ "candidateId": "candidate-1", "text": "The integration is read-only.", "claimIds": ["read-only-integration"] }]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/evidence-record.schema.json",
+  "caseId": "evidence-record/bad-digest",
+  "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0",
+    "evidenceId": "contract-tests",
+    "recordedAt": "2026-08-27T15:00:00Z",
+    "source": { "sourceType": "document", "title": "Contract tests", "locator": { "type": "project_file", "value": "test" }, "capturedAt": "2026-08-27T15:00:00Z", "sourceDigest": "sha256:ABC" },
+    "provenance": { "originType": "first_party", "collectedAt": "2026-08-27T15:00:00Z" },
+    "permission": { "mode": "claim_support", "basis": "owned", "purpose": "Verification", "scope": {}, "attestedBy": "owner", "attestedAt": "2026-08-27T15:00:00Z", "restricted": false },
+    "supportRole": "direct", "scope": {}, "validity": { "validFrom": "2026-08-27T15:00:00Z" }, "sensitivity": "internal"
+  },
+  "expected": { "keyword": "pattern", "instancePath": "/source/sourceDigest" }
+}

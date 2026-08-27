@@ -1,0 +1,9 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json", "caseId": "policy-rule/equals-empty-values", "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "ruleId": "equals-empty", "version": "1.0.0", "title": "Equals needs a value", "scope": {},
+    "conditions": [{ "fact": "claim.kind", "operator": "equals", "values": [] }], "effect": "warning", "evidence": [], "recommendation": "Supply one value.", "automaticAction": "none",
+    "reference": { "title": "Policy", "uri": "https://verbosia.dev/policy" }, "tests": [{ "caseId": "empty", "facts": [], "expectedMatch": false }]
+  },
+  "expected": { "keyword": "minItems", "instancePath": "/conditions/0/values" }
+}

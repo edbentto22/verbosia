@@ -10,23 +10,42 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./schemas/manifest": "./schemas/manifest.json",
+    "./schemas/brand-memory": "./schemas/brand-memory.schema.json",
+    "./schemas/claim-validation-report": "./schemas/claim-validation-report.schema.json",
+    "./schemas/claim-validation-request": "./schemas/claim-validation-request.schema.json",
+    "./schemas/common": "./schemas/common.schema.json",
+    "./schemas/context-pack-contribution": "./schemas/context-pack-contribution.schema.json",
+    "./schemas/diagnostic": "./schemas/diagnostic.schema.json",
+    "./schemas/evidence-record": "./schemas/evidence-record.schema.json",
+    "./schemas/inspect-brand-context-request": "./schemas/inspect-brand-context-request.schema.json",
+    "./schemas/policy-override": "./schemas/policy-override.schema.json",
+    "./schemas/policy-rule": "./schemas/policy-rule.schema.json",
+    "./schemas/resolved-brand-context": "./schemas/resolved-brand-context.schema.json"
   },
   "files": [
     "dist",
+    "schemas",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "contracts:check": "node ./scripts/generate-contract-types.mjs --check",
+    "contracts:generate": "node ./scripts/generate-contract-types.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "bcp-47": "2.1.1",
     "gray-matter": "^4.0.3"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.68.0",
     "@google/genai": "^0.14.0",
+    "json-schema-to-typescript": "15.0.4",
     "openai": "^4.104.0",
     "redis": "^4.7.0"
   },

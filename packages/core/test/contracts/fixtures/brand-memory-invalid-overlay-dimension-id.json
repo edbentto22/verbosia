@@ -1,0 +1,10 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/brand-memory.schema.json", "caseId": "brand-memory/overlay-dimension-portable-id", "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "brandId": "verbosia", "revision": "1.0.0", "updatedAt": "2026-08-27T15:00:00Z",
+    "identity": { "name": "Verbosia" }, "voice": { "toneTraits": [], "avoidTraits": [], "styleInstructions": [] },
+    "audiences": [], "offerings": [], "differentiators": [], "terminology": [], "restrictions": [], "claims": [], "editorialRiskMinimums": [],
+    "overlays": [{ "overlayId": "bad-market", "selector": { "dimension": "market", "value": "BR Market" }, "patch": { "set": { "toneTraits": ["clear"] } } }]
+  },
+  "expected": { "keyword": "pattern", "instancePath": "/overlays/0/selector/value" }
+}

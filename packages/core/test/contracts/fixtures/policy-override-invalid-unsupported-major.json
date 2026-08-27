@@ -1,0 +1,5 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-override.schema.json", "caseId": "persisted-version/policy-override-major-2", "valid": false,
+  "instance": { "schemaVersion": "2.0.0", "overrideId": "strict-br", "ruleRef": "avoid-hype@1.0.0", "scope": {}, "effect": "blocking", "justification": "Local requirement.", "approvalRef": "approval-1", "validFrom": "2026-08-27T15:00:00Z" },
+  "expected": { "keyword": "const", "instancePath": "/schemaVersion" }
+}

@@ -1,0 +1,14 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json",
+  "caseId": "policy-rule/bad-version",
+  "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "ruleId": "avoid-hype", "version": "v1.0.0", "title": "Avoid hype", "scope": {},
+    "conditions": [{ "fact": "claim.kind", "operator": "equals", "values": ["hype"] }],
+    "effect": "warning", "evidence": [], "recommendation": "Use evidence.", "automaticAction": "suggest",
+    "reference": { "title": "Policy", "uri": "https://verbosia.dev/policy" },
+    "tests": [{ "caseId": "hype", "facts": [], "expectedMatch": true }]
+  },
+  "expected": { "keyword": "pattern", "instancePath": "/version" }
+}

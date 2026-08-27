@@ -1,0 +1,14 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/evidence-record.schema.json",
+  "caseId": "evidence-locator/project-traversal",
+  "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "evidenceId": "traversal", "recordedAt": "2026-08-27T15:00:00Z",
+    "source": { "sourceType": "document", "title": "Traversal", "locator": { "type": "project_file", "value": "docs/../secret.txt" }, "capturedAt": "2026-08-27T15:00:00Z", "sourceDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+    "provenance": { "originType": "first_party", "collectedAt": "2026-08-27T15:00:00Z" },
+    "permission": { "mode": "prohibited", "basis": "restricted", "purpose": "Reject traversal", "scope": {}, "attestedBy": "owner", "attestedAt": "2026-08-27T15:00:00Z", "restricted": true },
+    "supportRole": "hypothesis", "scope": {}, "validity": { "validFrom": "2026-08-27T15:00:00Z" }, "sensitivity": "restricted"
+  },
+  "expected": { "keyword": "pattern", "instancePath": "/source/locator/value" }
+}

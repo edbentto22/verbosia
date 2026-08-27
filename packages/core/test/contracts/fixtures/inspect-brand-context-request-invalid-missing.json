@@ -1,0 +1,8 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/inspect-brand-context-request.schema.json",
+  "caseId": "inspect-brand-context-request/missing-locale",
+  "valid": false,
+  "instance": { "contractVersion": "1.0.0" },
+  "expected": { "keyword": "required", "instancePath": "" }
+}

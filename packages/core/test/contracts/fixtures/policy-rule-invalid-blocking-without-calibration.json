@@ -1,0 +1,9 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json", "caseId": "policy-rule/blocking-without-calibration", "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "ruleId": "block-hype", "version": "1.0.0", "title": "Block hype", "scope": {},
+    "conditions": [{ "fact": "claim.kind", "operator": "equals", "values": ["hype"] }], "effect": "blocking", "evidence": [], "recommendation": "Use evidence.", "automaticAction": "none",
+    "reference": { "title": "Policy", "uri": "https://verbosia.dev/policy" }, "tests": [{ "caseId": "hype", "facts": [], "expectedMatch": true }]
+  },
+  "expected": { "keyword": "required", "instancePath": "" }
+}

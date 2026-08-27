@@ -1,0 +1,13 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/claim-validation-report.schema.json",
+  "caseId": "claim-validation-report/claim-id",
+  "valid": false,
+  "instance": {
+    "contractVersion": "1.0.0", "evaluationTime": "2026-08-27T15:00:00.000Z", "policyEngineVersion": "1.0.0",
+    "stateDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "decisionDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "outcome": "block", "results": [{ "candidateId": "candidate-1", "claimId": "Bad_ID", "outcome": "block", "reasonCodes": ["CLAIM_UNKNOWN"], "constraints": [], "evidenceRefs": [] }], "diagnostics": []
+  },
+  "expected": { "keyword": "pattern", "instancePath": "/results/0/claimId" }
+}

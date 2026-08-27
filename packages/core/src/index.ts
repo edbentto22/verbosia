@@ -6,6 +6,8 @@
  */
 
 export * from './types.js';
+export type * from './contracts/generated.js';
+export { CONTRACT_SCHEMA_IDS, CONTRACT_VERSION } from './contracts/constants.js';
 export { PROMPT_VERSION, resolveConfig } from './config.js';
 export {
   ProjectConfigError,
