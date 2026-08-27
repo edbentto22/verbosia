@@ -1,0 +1,132 @@
+{
+  "workflow_version": "1.2.0",
+  "timestamps": {
+    "started": "2026-08-27T17:14:14Z",
+    "last_updated": "2026-08-27T17:28:19Z",
+    "completed": "2026-08-27T17:28:19Z"
+  },
+  "mode": "initial_scan",
+  "scan_level": "exhaustive",
+  "project_root": ".",
+  "project_knowledge": "docs",
+  "completed_steps": [
+    {
+      "step": "step_1",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Classified the repository as a pnpm TypeScript monorepo with six product packages: Core, CLI, MCP, Astro, Eleventy and Next.js."
+    },
+    {
+      "step": "step_2",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Inventoried the root README, package READMEs, 17 project documentation files, the completed MCP foundation specification and the Brand Memory/Evidence Ledger planning artifacts."
+    },
+    {
+      "step": "step_3",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Verified the Node.js, pnpm, TypeScript, MCP, Zod, provider, framework-adapter and CI technology stack from manifests and source."
+    },
+    {
+      "step": "step_4",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Read all first-party source and test files outside generated and tooling directories; mapped translation, TM, review, SEO, CLI, MCP, security and future governance behavior."
+    },
+    {
+      "step": "step_5",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Documented the annotated repository structure and package responsibilities in the root README."
+    },
+    {
+      "step": "step_6",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Documented installation, configuration, development, build, test, CLI, MCP and operational workflows in the root README."
+    },
+    {
+      "step": "step_7",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Documented package integration through the Core, CLI, MCP stdio server and Astro, Eleventy and Next.js adapters."
+    },
+    {
+      "step": "step_8",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Linked the finalized architecture spine and clearly separated implemented MCP behavior from the approved Brand Memory/Evidence Ledger architecture."
+    },
+    {
+      "step": "step_9",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Consolidated project overview, component inventory, development guide, API examples, security model and roadmap into README.md as requested."
+    },
+    {
+      "step": "step_10",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:24:11Z",
+      "summary": "Rebuilt README.md as the primary human and AI entry point with navigation to all supporting documentation."
+    },
+    {
+      "step": "step_11",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:28:19Z",
+      "summary": "Validated Markdown structure, 20 internal anchors, 45 links, JSON state, whitespace and consistency; build, typecheck, 105 tests and offline CLI smoke commands passed."
+    },
+    {
+      "step": "step_12",
+      "status": "completed",
+      "timestamp": "2026-08-27T17:28:19Z",
+      "summary": "Completed the user-requested single-manual documentation scope and prepared the authorized documentation and specification changes for publication."
+    }
+  ],
+  "current_step": "completed",
+  "findings": {
+    "project_classification": {
+      "repository_type": "monorepo",
+      "parts_count": 6,
+      "project_types": [
+        "library",
+        "cli",
+        "backend"
+      ],
+      "parts": [
+        "@verbosia/core",
+        "verbosia",
+        "@verbosia/mcp",
+        "@verbosia/astro",
+        "@verbosia/eleventy",
+        "@verbosia/next"
+      ]
+    },
+    "technology_stack": {
+      "language": "TypeScript ESM",
+      "package_manager": "pnpm 10.33.2",
+      "current_full_runtime_floor": "Node.js 20",
+      "test_runner": "Vitest",
+      "mcp_transport": "local stdio"
+    },
+    "documentation_decisions": {
+      "primary_entry_point": "README.md",
+      "artifact_language": "Portuguese by explicit conversational context",
+      "distribution_status": "Packages are not published to npm as of 2026-08-27",
+      "status_taxonomy": [
+        "available",
+        "specified",
+        "future"
+      ],
+      "verification_summary": "pnpm build, pnpm typecheck, pnpm test (105/105), CLI help/status/dry-run smoke, Markdown links/anchors/structure and JSON parsing all passed.",
+      "open_risks": "Packages are not yet published to npm; Brand Memory, Evidence Ledger and the two additive MCP tools remain specified rather than implemented."
+    }
+  },
+  "outputs_generated": [
+    "project-scan-report.json",
+    "../README.md",
+    "cli.md",
+    "inicio-rapido.md"
+  ],
+  "resume_instructions": "Workflow complete. Use README.md as the primary manual and the linked architecture, SPEC and stories as the implementation contract."
+}
