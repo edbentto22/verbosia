@@ -33,6 +33,7 @@ Rebuild sem mudanças?  →  100% cache, 0 chamadas de API.
 | [`@verbosia/eleventy`](packages/eleventy) | Plugin Eleventy: tradução no `eleventy.before`, filtros de SEO, sitemap |
 | [`@verbosia/next`](packages/next) | Helpers Next.js (App Router): `verbosiaAlternates` para o Metadata API |
 | [`verbosia`](packages/cli) | CLI: `translate` · `status` · `prune` · `tm:sync` · `review` |
+| [`@verbosia/mcp`](packages/mcp) | MCP local read-only: inspeção do projeto e planejamento com a TM em arquivo |
 
 ## Início rápido
 
@@ -75,6 +76,17 @@ verbosia review                # editor de revisão em http://127.0.0.1:5199
 | [Astro](docs/frameworks/astro.md) · [Eleventy](docs/frameworks/eleventy.md) · [Next.js](docs/frameworks/nextjs.md) | Guias por framework |
 
 Exemplo funcional em [`examples/blog-pt`](examples/blog-pt).
+
+## MCP local para agentes
+
+O pacote `@verbosia/mcp` permite que hosts MCP inspecionem um projeto e planejem sua localização sem escrever arquivos, acessar Redis ou chamar provedores:
+
+```bash
+pnpm add -D @verbosia/mcp
+verbosia-mcp --root /caminho/absoluto/do/projeto
+```
+
+Ele expõe `verbosia.inspect_project` e `verbosia.plan_localization`. A raiz explícita é obrigatória e funciona como limite de segurança para config, conteúdo, saída, strings de UI e symlinks. Veja a [configuração do pacote MCP](packages/mcp/README.md).
 
 ## Desenvolvimento
 
