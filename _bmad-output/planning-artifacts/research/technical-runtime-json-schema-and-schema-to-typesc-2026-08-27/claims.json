@@ -1,0 +1,17 @@
+[
+  {
+    "claim": "Ajv 8.20.0 supplies Draft 2020-12 validation and explicitly supports Node 22/24.",
+    "class": "versions-compatibility",
+    "pub_date": "2026-04"
+  },
+  {
+    "claim": "json-schema-to-typescript consumes canonical JSON files and supports a deterministic programmatic generation adapter with offline reference policy.",
+    "class": "integration",
+    "pub_date": "2026-08"
+  },
+  {
+    "claim": "bcp-47 provides an ESM-compatible typed parser suitable for a custom semantic format with shared fixtures.",
+    "class": "versions-compatibility",
+    "pub_date": "2026-08"
+  }
+]
