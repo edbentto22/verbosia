@@ -7,6 +7,17 @@
 
 export * from './types.js';
 export { PROMPT_VERSION, resolveConfig } from './config.js';
+export {
+  ProjectConfigError,
+  assertWithinProjectRoot,
+  loadProjectConfig,
+  resolveProjectRoot,
+} from './project-config.js';
+export type {
+  LoadProjectConfigOptions,
+  LoadedProjectConfig,
+  ProjectConfigErrorCode,
+} from './project-config.js';
 export { discover, mtimeMs } from './discovery.js';
 export {
   segment,
@@ -50,6 +61,8 @@ export { buildSitemapEntries, buildSitemapXml, defaultRoute } from './seo/sitema
 export type { RouteArgs, RouteBuilder } from './seo/sitemap.js';
 export { translate, localizedPath } from './translate.js';
 export type { TranslateOptions, TranslateReport, ProgressEvent } from './translate.js';
+export { planTranslation } from './translation-plan.js';
+export type { TranslationPlanItem, TranslationPlanReport } from './translation-plan.js';
 export { status, summarize } from './status.js';
 export type { StatusSummary } from './status.js';
 export { slugify, resolveSlug, loadSlugMap, saveSlugMap } from './slug.js';

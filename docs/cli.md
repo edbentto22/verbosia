@@ -14,7 +14,7 @@ provider=anthropic model=claude-sonnet-5 source=pt targets=en,es
 Concluído: 2 docs × 2 idiomas — 10 hits, 8 chamadas de API, 4 arquivos gravados
 ```
 
-`--dry-run` mostra o plano (hits × chamadas) **sem chamar a API nem escrever** — use para estimar custo antes de rodar.
+`--dry-run` mostra o plano (hits × chamadas) sem chamar o provider nem gravar conteúdo localizado. Com Redis configurado, a CLI pode consultar o Tier 2 e fazer backfill da TM em arquivo; para planejamento estritamente local e sem escrita, use `verbosia.plan_localization` no MCP.
 
 ## `verbosia status`
 

@@ -37,6 +37,8 @@ export interface ProgressEvent {
   segments: number;
   hits: number;
   misses: number;
+  /** Segmentos não traduzíveis; entram em `hits` no relatório legado, mas não são hits de TM. */
+  passthrough: number;
 }
 
 export interface TranslateReport {
@@ -84,6 +86,7 @@ export async function translate(
       for (const targetLang of config.targets) {
         let docHits = 0;
         let docMisses = 0;
+        let docPassthrough = 0;
 
         // Segmentos em paralelo (limits.concurrency); ordem preservada.
         const translated: TranslatedSegment[] = await mapLimit(
@@ -96,6 +99,7 @@ export async function translate(
             }),
         );
         for (const result of translated) {
+          if (result.translatedBy === 'passthrough') docPassthrough++;
           if (result.source === 'provider') docMisses++;
           else docHits++;
         }
@@ -108,6 +112,7 @@ export async function translate(
           segments: segments.length,
           hits: docHits,
           misses: docMisses,
+          passthrough: docPassthrough,
         });
 
         if (!opts.dryRun) {

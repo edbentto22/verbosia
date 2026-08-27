@@ -1,0 +1,92 @@
+- id: "1"
+  title: Publicar contratos e schemas portáteis
+  description: >-
+    Resolver a escolha do runtime JSON Schema e entregar os contratos versionados,
+    tipos, exports e golden fixtures exigidos por CAP-6 e CAP-9. Não implementar
+    loaders, Policy Engine ou novas tools MCP nesta story.
+  spec_checkpoint: true
+  done_checkpoint: true
+  invoke_dev_with: ""
+
+- id: "2"
+  title: Construir snapshot local seguro
+  description: >-
+    Implementar o substrato de filesystem de CAP-8 com boundary de raiz, leitura
+    estável por handle, I-JSON/JCS, digests, ordenação determinística e limites de
+    recursos. Não incluir comportamento de Brand Memory, Evidence Ledger ou Policy
+    Engine.
+  spec_checkpoint: true
+  done_checkpoint: true
+  invoke_dev_with: >-
+    Comece pelos testes adversariais de boundary, symlink e TOCTOU; não implemente
+    domínio.
+
+- id: "3"
+  title: Implementar Brand Memory e overlays
+  description: >-
+    Entregar CAP-1 e CAP-2 com carregamento canônico, validação, overlays tipados,
+    risco efetivo e contexto resolvido. Manter Evidence Ledger e política de
+    autorização fora desta story.
+  spec_checkpoint: true
+  done_checkpoint: false
+  invoke_dev_with: >-
+    Mantenha Claims globais e overlays tipados; não implemente ledger ou policy.
+
+- id: "4"
+  title: Implementar Evidence Ledger
+  description: >-
+    Entregar CAP-3 com permission default-deny, source digest, validade, escopo
+    exato, sensibilidade, supersession linear, quarentena e enforcement add-only em
+    CI. Não implementar decisões editoriais além dos estados de evidência definidos
+    pela SPEC.
+  spec_checkpoint: true
+  done_checkpoint: true
+  invoke_dev_with: >-
+    Priorize permission default-deny, supersession e quarentena antes do happy path.
+
+- id: "5"
+  title: Implementar Policy Engine determinístico
+  description: >-
+    Entregar CAP-4 e CAP-7 com PolicyDecisionTable, reason codes fechados, agregação
+    de outcomes, PolicyRules, overrides, hard guards e calibração humana. Manter a
+    autorização independente de qualquer modelo de IA.
+  spec_checkpoint: true
+  done_checkpoint: true
+  invoke_dev_with: >-
+    Implemente a partir das golden fixtures da PolicyDecisionTable; IA não autoriza.
+
+- id: "6"
+  title: Expor tools MCP aditivas
+  description: >-
+    Integrar CAP-4 e CAP-5 por meio de verbosia.inspect_brand_context e
+    verbosia.validate_claims. Preservar as duas tools legadas, carregamento lazy,
+    DTOs allowlisted, diagnósticos sanitizados e compatibilidade stdio.
+  spec_checkpoint: false
+  done_checkpoint: true
+  invoke_dev_with: >-
+    Preserve integralmente os contratos legados e carregue a nova memória somente
+    sob demanda.
+
+- id: "7"
+  title: Provar portabilidade e hardening
+  description: >-
+    Concluir os gates de CAP-6 e CAP-8 para package/tarball, Node 22/24, vetores PHP,
+    segurança com canários, boundary, CI e fixtures pt-BR, en-US e es-419. Não
+    aceitar conclusão parcial dos gates transversais da matriz de aceitação.
+  spec_checkpoint: false
+  done_checkpoint: true
+  invoke_dev_with: >-
+    Não aceite validação parcial: Node 22/24, vetores PHP, canários e três locales
+    são obrigatórios.
+
+- id: "8"
+  title: Validar cenário E2E iterativo
+  description: >-
+    Executar o cenário real fornecido pelo usuário nas quatro tools, comparar
+    outcomes esperados, corrigir causas-raiz e transformar cada defeito em regressão
+    permanente. Encerrar apenas quando o success signal da SPEC e o gate E2E da
+    matriz de aceitação forem satisfeitos.
+  spec_checkpoint: true
+  done_checkpoint: true
+  invoke_dev_with: >-
+    Não iniciar sem cenário, outcomes e critérios de parada aprovados pelo usuário.

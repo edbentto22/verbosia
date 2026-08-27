@@ -51,7 +51,7 @@ A config completa está em [Configuração](configuracao.md).
 verbosia translate --dry-run
 ```
 
-O dry-run mostra o plano — quantos segmentos viriam do cache e quantos chamariam a API — **sem gastar nada**. Quando estiver satisfeito:
+O dry-run mostra o plano — quantos segmentos viriam do cache e quantos chamariam a API — sem chamar o provider. Com Redis configurado, ele pode consultar o Tier 2 e fazer backfill da TM local; quando estiver satisfeito:
 
 ```bash
 verbosia translate
