@@ -79,3 +79,22 @@ export { withRetry, isRetryable, CallBudget, mapLimit } from './limits.js';
 export type { RetryOptions } from './limits.js';
 export { resolveFieldPaths, getPath, setPath, cloneFrontmatter } from './frontmatter-paths.js';
 export type { FieldMatch } from './frontmatter-paths.js';
+export {
+  SnapshotError,
+  SNAPSHOT_LIMITS,
+  canonicalizeJcs,
+  parseIJson,
+  readLocalJsonSnapshot,
+  sha256Digest,
+} from './snapshot/index.js';
+export type {
+  JsonPrimitive,
+  JsonValue,
+  LocalJsonSnapshot,
+  LocalJsonSnapshotEntry,
+  LocalJsonSnapshotRequest,
+  PortablePath,
+  Sha256Digest,
+  SnapshotErrorCode,
+  SnapshotLimits,
+} from './snapshot/index.js';

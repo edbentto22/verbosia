@@ -1,0 +1,4 @@
+{
+  "input": ["😀.json", "𐀀.json", ".json", "é.json", "A.json"],
+  "expectedUtf8Order": ["A.json", "é.json", ".json", "𐀀.json", "😀.json"]
+}

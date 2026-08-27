@@ -65,4 +65,75 @@ pnpm contracts:check    # compare in memory; never writes
 pnpm contracts:test     # registry, formats, fixtures, exports, and generator probes
 ```
 
+## Secure local JSON snapshots
+
+`readLocalJsonSnapshot` is the domain-neutral, read-only filesystem substrate used by
+later Brand Memory and Evidence Ledger loaders. The caller supplies an explicit project
+root plus project-relative file or directory scopes. Directory scopes are recursive and
+every regular file they contain is treated as JSON; callers should therefore select only
+directories whose files are authoritative JSON inputs.
+
+```ts
+import { readLocalJsonSnapshot } from '@verbosia/core';
+
+const snapshot = await readLocalJsonSnapshot({
+  projectRoot: '/real/workspace/root',
+  paths: ['.verbosia/brand', '.verbosia/evidence'],
+});
+
+for (const entry of snapshot.entries) {
+  console.log(entry.path, entry.rawDigest, entry.canonicalDigest);
+}
+console.log(snapshot.inventoryDigest);
+```
+
+The reader resolves the explicit root once per whole attempt, rejects traversal,
+symlink components, Windows aliases/reserved names, special files, and regular files with
+multiple hard links, then enumerates through bounded directory handles in UTF-8 bytewise
+portable-path order. Each file is revalidated immediately before open, opened read-only,
+non-blocking, and without following its final component, then read twice in bounded chunks by
+handle, and compared by device, inode, type, link count, size, mode, and nanosecond
+change/modify timestamps before and after. A second inventory pass detects added,
+removed, renamed, or edited entries. Detectable mutation discards every partial result;
+one complete retry is allowed before `STATE_CHANGED_DURING_READ`.
+
+Inventory paths retain their original spelling in immutable results and digest preimages.
+Before any content read, a deterministic NFC plus repository default Unicode case-fold
+policy (non-Turkic scalar mappings with full expansions) rejects paths that
+would collide on common case-insensitive or normalization-insensitive filesystems.
+
+Bytes are decoded as fatal UTF-8/I-JSON before object construction. BOMs, malformed
+UTF-8, duplicate decoded keys, lone surrogates, non-finite/underflowing numbers,
+integer-valued numbers outside the safe range regardless of spelling, excessive nesting,
+and resource overflow fail with a sanitized closed error code. Accepted values are
+canonicalized with RFC 8785/JCS without Unicode
+normalization and hashed as full `sha256:<lowercase-hex>` digests. The inventory digest
+uses a versioned JCS object containing each ordered relative path plus its raw and
+canonical digests; it is intentionally not the later semantic `stateDigest`.
+
+V1 fixed limits are exported as `SNAPSHOT_LIMITS`:
+
+| Limit | Value |
+| --- | ---: |
+| Input scopes | 256 |
+| Portable path | 1,024 UTF-8 bytes |
+| Regular files | 10,000 |
+| Filesystem inventory entries | 20,000 |
+| One file | 1 MiB |
+| Whole snapshot | 64 MiB |
+| JSON container depth | 64 |
+| JSON values across one snapshot attempt | 1,000,000 |
+| JSON number lexeme | 128 characters |
+
+The 20,000-entry inventory ceiling accommodates the 10,000-record V1 ledger plus its
+root and substantial directory overhead. These are substrate ceilings, not domain
+entitlements: later Evidence Ledger loaders may lower an individual evidence-record
+file to 256 KiB while keeping the substrate itself domain-neutral.
+
+The threat model covers detectable concurrent mutation in a trusted local workspace. It
+does not claim resistance to a hostile kernel, administrator, or privileged writer able
+to perform indistinguishable swap-back attacks. This layer performs no schema/domain
+validation, quarantine, locator verification, supersession, policy decisions, cache,
+writes, network access, provider calls, or MCP behavior.
+
 [Documentação completa](../../docs/README.md) · MIT
