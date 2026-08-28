@@ -120,3 +120,23 @@ export type {
   ResolveBrandContextInput,
   ResolvedBrandContextResult,
 } from './context-resolution/index.js';
+export {
+  EvidenceLedgerError,
+  evaluateEvidence,
+  loadEvidenceLedger,
+} from './evidence-ledger/index.js';
+export type {
+  EvaluateEvidenceInput,
+  EvaluatedEvidenceEntry,
+  EvidenceEvaluationContext,
+  EvidenceEvaluationResult,
+  EvidenceEvaluationState,
+  EvidenceLedgerEntry,
+  EvidenceLedgerErrorCode,
+  EvidenceLedgerStatus,
+  EvidenceReasonCode,
+  EvidenceReferenceExposure,
+  EvidenceSupersessionChain,
+  LoadEvidenceLedgerInput,
+  LoadedEvidenceLedger,
+} from './evidence-ledger/index.js';

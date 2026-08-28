@@ -11,6 +11,7 @@
     "contracts:check": "pnpm --filter @verbosia/core contracts:check",
     "contracts:generate": "pnpm --filter @verbosia/core contracts:generate",
     "contracts:test": "vitest run packages/core/test/contracts",
+    "evidence:add-only:check": "node ./scripts/check-evidence-add-only.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "pnpm -r --filter \"./packages/*\" typecheck"

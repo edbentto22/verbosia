@@ -1,0 +1,87 @@
+{
+  "ledger": {
+    "entries": [
+      {
+        "evidenceId": "evidence-a",
+        "status": "valid",
+        "referenceExposure": "allowed",
+        "diagnostics": []
+      },
+      {
+        "evidenceId": "evidence-b",
+        "status": "valid",
+        "referenceExposure": "allowed",
+        "diagnostics": []
+      },
+      {
+        "evidenceId": "evidence-c",
+        "status": "unavailable",
+        "referenceExposure": "restricted",
+        "diagnostics": []
+      }
+    ],
+    "chains": [
+      { "evidenceIds": ["evidence-a", "evidence-b"] },
+      { "evidenceIds": ["evidence-c"] }
+    ],
+    "diagnostics": [
+      {
+        "severityRank": 1,
+        "severity": "warning",
+        "code": "HISTORY_UNVERIFIED",
+        "relativePath": "",
+        "jsonPointer": "",
+        "claimId": "",
+        "evidenceId": "",
+        "message": "Evidence Ledger history has not been independently verified.",
+        "remediation": "Verify history with a trusted repository attestation."
+      }
+    ]
+  },
+  "result": {
+    "evaluationTime": "2026-08-28T16:00:00.000Z",
+    "entries": [
+      {
+        "evidenceId": "evidence-a",
+        "state": "eligible",
+        "supportEligible": true,
+        "referenceExposure": "allowed",
+        "reasons": [],
+        "diagnostics": []
+      },
+      {
+        "evidenceId": "evidence-b",
+        "state": "not_yet_valid",
+        "supportEligible": false,
+        "referenceExposure": "allowed",
+        "reasons": ["EVIDENCE_NOT_YET_VALID"],
+        "diagnostics": []
+      },
+      {
+        "evidenceId": "evidence-c",
+        "state": "unavailable",
+        "supportEligible": false,
+        "referenceExposure": "restricted",
+        "reasons": ["EVIDENCE_UNAVAILABLE"],
+        "diagnostics": []
+      }
+    ],
+    "chains": [
+      { "evidenceIds": ["evidence-a", "evidence-b"] },
+      { "evidenceIds": ["evidence-c"] }
+    ],
+    "diagnostics": [
+      {
+        "severityRank": 1,
+        "severity": "warning",
+        "code": "HISTORY_UNVERIFIED",
+        "relativePath": "",
+        "jsonPointer": "",
+        "claimId": "",
+        "evidenceId": "",
+        "message": "Evidence Ledger history has not been independently verified.",
+        "remediation": "Verify history with a trusted repository attestation."
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceId": "evidence-c",
+  "recordedAt": "2026-08-27T15:00:00Z",
+  "source": {
+    "sourceType": "web_page",
+    "title": "Remote reference",
+    "locator": { "type": "public_uri", "value": "https://example.com/evidence" },
+    "capturedAt": "2026-08-27T15:00:00Z",
+    "sourceDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "provenance": { "originType": "third_party", "collectedAt": "2026-08-27T15:00:00Z" },
+  "permission": {
+    "mode": "claim_support",
+    "basis": "public_reference",
+    "purpose": "Retain a remote reference without network access.",
+    "scope": { "locale": "pt-BR" },
+    "attestedBy": "brand-owner",
+    "attestedAt": "2026-08-27T15:00:00Z",
+    "restricted": false
+  },
+  "supportRole": "direct",
+  "scope": { "locale": "pt-BR" },
+  "validity": { "validFrom": "2026-08-27T15:00:00Z" },
+  "sensitivity": "restricted"
+}
