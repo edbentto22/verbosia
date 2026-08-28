@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import matter from 'gray-matter';
 import { FileCacheDriver, cacheDirFor, createCacheDrivers } from './cache-drivers/index.js';
-import { sourceHash } from './cache-key.js';
+import { TM_KEY_VERSION, deriveCacheIdentity, sourceHash } from './cache-key.js';
 import { discover } from './discovery.js';
 import { getPath } from './frontmatter-paths.js';
 import { CallBudget, mapLimit } from './limits.js';
@@ -116,7 +116,7 @@ export async function translate(
         });
 
         if (!opts.dryRun) {
-          await writeLocalized(doc, targetLang, translated, config, slugMap);
+          await writeLocalized(doc, targetLang, translated, config, provider, slugMap);
           written++;
         }
       }
@@ -156,6 +156,7 @@ async function writeLocalized(
   targetLang: string,
   translated: TranslatedSegment[],
   config: ResolvedConfig,
+  provider: Provider,
   slugMap: SlugMap,
 ): Promise<void> {
   const body = reassembleBody(translated) ?? doc.body;
@@ -204,6 +205,21 @@ async function writeLocalized(
     // primeira tradução deste doc/idioma
   }
 
+  const contextDigest =
+    translated.find((result) => result.contextDigest)?.contextDigest ??
+    deriveCacheIdentity({
+      sourceText: doc.body || doc.id,
+      sourceLang: config.source,
+      targetLang,
+      targetVariant: config.variant[targetLang] ?? null,
+      provider: provider.name,
+      model: config.model,
+      tone: config.tone ?? null,
+      glossary: config.glossary,
+      doNotTranslate: config.doNotTranslate,
+      promptVersion: config.promptVersion,
+    }).contextDigest;
+
   frontmatter.verbosia = {
     sourceHash: sourceHash(doc.body),
     translatedBy: config.model,
@@ -211,6 +227,8 @@ async function writeLocalized(
     reviewed,
     ...(reviewedAt ? { reviewedAt } : {}),
     lang: targetLang,
+    tmKeyVersion: TM_KEY_VERSION,
+    contextDigest,
   };
 
   const file = matter.stringify(body + '\n', frontmatter);

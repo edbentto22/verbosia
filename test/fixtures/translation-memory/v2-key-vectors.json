@@ -1,0 +1,338 @@
+[
+  {
+    "name": "baseline",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:20d2b32a6b93fd51791b494cab9f122f03e2f4bbad74398225ea82ca1fcdd9d8:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "adversarial-source",
+    "input": {
+      "sourceText": "NUL\u0000 pipe| colon: marker␞\nquote\" slash\\",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:20d2b32a6b93fd51791b494cab9f122f03e2f4bbad74398225ea82ca1fcdd9d8:0f98d07f084a45ff8ce725ed3a74f08e8f6213afc22d23bf22cfd62e6c3326ab"
+  },
+  {
+    "name": "former-collision-left",
+    "input": {
+      "sourceText": "a",
+      "sourceLang": "pt-BR",
+      "targetLang": "b\u0000|c",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:9f2a447a563c9c586a7e86e76ea7d18cfed49964db3240ce0e6c470517994208:ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"
+  },
+  {
+    "name": "former-collision-right",
+    "input": {
+      "sourceText": "a\u0000|b",
+      "sourceLang": "pt-BR",
+      "targetLang": "c",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:a16fad1aab8045b4aef8babca7f5ad6254a5268149ccb9ae629d8141c90c6473:62897e0331b5ffae9e9b88952fea644dbe2bc5a3e5adad8d0234b8b36a51ad38"
+  },
+  {
+    "name": "partitioned",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["A"],
+      "doNotTranslate": ["B"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:6f262ad9e6574739ccdfcd621cfc474cd8da135e095edc18426ec0ddefd7a975:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "merged",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["A", "B"],
+      "doNotTranslate": [],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:c09033a96cc56008171f0dceeaf4d00bc795fa1bb745722b9184587090696dd5:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "optional-null-empty-arrays",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": null,
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": [],
+      "doNotTranslate": [],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:2ffd9c6b8b158c1db78effab26daaa5bbbbf3138f5c74c3e2ab26ff8b1dc8136:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "unicode-composed",
+    "input": {
+      "sourceText": "café",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:20d2b32a6b93fd51791b494cab9f122f03e2f4bbad74398225ea82ca1fcdd9d8:850f7dc43910ff890f8879c0ed26fe697c93a067ad93a7d50f466a7028a9bf4e"
+  },
+  {
+    "name": "unicode-decomposed",
+    "input": {
+      "sourceText": "café",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:20d2b32a6b93fd51791b494cab9f122f03e2f4bbad74398225ea82ca1fcdd9d8:81ef060bcd98adc7824eb5c1ada83c32491b16018e11e79f00ab9d09e04b015a"
+  },
+  {
+    "name": "source-lang-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:4172ad1ebe7b7af86a7683ec448370e796ea65dc61282e624bf879f858008b7b:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "target-lang-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "es",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:a68f9070e9bef9e80b163baf38c6a38b5999c3167a30a65aa32370b3745a3237:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "variant-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-GB",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:4c91e07c642a4ec22cff62347c95ebf815f5264e2b69a9a562cd4d0e12047bdf:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "provider-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "openai",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:22148482023868d234bd8b857c49b544e2a3bb3c942c9d68204ca5eeb115489b:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "model-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "gpt-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:2f8b6e0ea0dda5813c4a2bb9c748e061c138f33935efb93b8cb4761947d1048f:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "tone-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": "formal",
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:1a1f4edc450112d841355fe3ad281e26ee23e1b49e3885447840391bbb7b3da5:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "glossary-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia", "A"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:b0dddbae30110e73369b11bc683795772d1e86ec16f00758dc94354c7c3009f9:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "do-not-translate-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia", "B"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:c9f82ce0bb52b0e4d0acc5196fb26a7cf3c748e9f52ce13e421367e0fa0ef2b8:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "prompt-version-mutation",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v2"
+    },
+    "expectedKey": "v2:a1c7f7ae47864e0a9139aa865529b8390c5f842a46d663e6026352e09dd4d8ec:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "source-text-mutation",
+    "input": {
+      "sourceText": "Olá mundo!",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:20d2b32a6b93fd51791b494cab9f122f03e2f4bbad74398225ea82ca1fcdd9d8:a071d7f6c6ec49a7577fef4c42a7fb706c6c16a4bee0264fa171b95534bc86d3"
+  },
+  {
+    "name": "glossary-reversed",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["B", "A"],
+      "doNotTranslate": ["Verbosia"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:c2bd4f9dc3c6b4ce5601a7a04ec666545353aff864f33429eda0bc6f1765222f:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  },
+  {
+    "name": "do-not-translate-reversed",
+    "input": {
+      "sourceText": "Olá mundo",
+      "sourceLang": "pt-BR",
+      "targetLang": "en",
+      "targetVariant": "en-US",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "tone": null,
+      "glossary": ["Verbosia = Verbosia"],
+      "doNotTranslate": ["B", "A"],
+      "promptVersion": "v1"
+    },
+    "expectedKey": "v2:f1d3b285f92319c404b2bdd73f0947dabc1a60e870b62e5f0c405f1b9faa28ef:44dae5dccc2e6ca3710dc84afd296754c6cd84465452d7a1d75d876528cc7e44"
+  }
+]

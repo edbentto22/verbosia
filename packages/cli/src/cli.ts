@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { prune, status, summarize, syncTM, translate } from '@verbosia/core';
 import { loadConfig } from './config-loader.js';
+import { formatPruneSummary, formatSyncSummary } from './report-format.js';
 import { startReviewServer } from './review-server.js';
 
 const c = {
@@ -17,7 +18,7 @@ Uso:
   verbosia translate [--dry-run]   Traduz o conteúdo e grava os arquivos localizados
   verbosia status                  Mostra o que mudou / falta traduzir
   verbosia prune [--dry-run]       Remove traduções e entradas de TM órfãs
-  verbosia tm:sync                 Sincroniza TM Redis <-> arquivos (last-write-wins)
+  verbosia tm:sync                 Sincroniza TM v2; reporta legado/malformadas ignoradas
   verbosia review [--port 5199]    Abre o editor local de revisão (edições voltam para a TM)
   verbosia help                    Mostra esta ajuda
 
@@ -84,24 +85,14 @@ async function cmdPrune(dryRun: boolean): Promise<number> {
   for (const f of report.orphanFiles) {
     console.log(`  ${dryRun ? c.yellow('órfão') : c.red('removido')} ${f}`);
   }
-  console.log(
-    '\n' +
-      c.bold(dryRun ? 'Plano de limpeza:' : 'Limpeza concluída:') +
-      ` ${report.orphanFiles.length} arquivos órfãos, ` +
-      `${report.orphanTmKeys} entradas de TM órfãs` +
-      (dryRun ? c.dim(' (dry-run — nada removido)') : ''),
-  );
+  console.log('\n' + formatPruneSummary(report, c));
   return 0;
 }
 
 async function cmdTmSync(): Promise<number> {
   const config = await loadConfig();
   const report = await syncTM(config);
-  console.log(
-    c.bold('TM sincronizada:') +
-      ` ${c.green(`${report.toRedis} → Redis`)}, ${c.green(`${report.toFile} → arquivo`)} ` +
-      c.dim(`(${report.total} no total)`),
-  );
+  console.log(formatSyncSummary(report, c));
   return 0;
 }
 

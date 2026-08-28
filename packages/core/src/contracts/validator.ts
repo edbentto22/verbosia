@@ -1,4 +1,8 @@
-import Ajv2020, { type ErrorObject, type ValidateFunction } from 'ajv/dist/2020.js';
+import Ajv2020, {
+  type Ajv2020 as Ajv2020Instance,
+  type ErrorObject,
+  type ValidateFunction,
+} from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import { parse, stringify } from 'bcp-47';
 
@@ -44,7 +48,7 @@ function isBcp47(value: string): boolean {
 }
 
 /** The only Ajv factory used by the contract runtime. */
-export function createContractAjv(): Ajv2020 {
+export function createContractAjv(): Ajv2020Instance {
   const ajv = new Ajv2020({
     strict: true,
     allErrors: true,

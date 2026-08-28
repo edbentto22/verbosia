@@ -2,7 +2,7 @@
 
 Engine do [Verbosia](https://github.com/edbentto22/verbosia) — tradução com IA para sites estáticos, agnóstico de framework.
 
-- **Translation Memory** endereçada por conteúdo (`sha256`), em dois níveis: arquivo comitável + Redis compartilhado (com backfill).
+- **Translation Memory v2** com contexto JCS/SHA-256 e digest exato do texto, em dois níveis: arquivo comitável + Redis compartilhado (com backfill).
 - **Segment-level**: tradução por parágrafo; editar um não invalida os outros. Blocos de código passam direto.
 - **Masking estrutural**: código, URLs, `{variáveis}` e tags MDX protegidos por tokens, com validação fail-safe na volta.
 - **4 providers BYOK**: Anthropic, OpenAI, Gemini, DeepL — mesma interface, SDKs como peers opcionais.
@@ -21,6 +21,29 @@ const config = resolveConfig({
 const report = await translate(config);
 // { hits: 42, misses: 3, written: 12, ... }
 ```
+
+O contrato de identidade também é público no pacote compilado:
+
+```ts
+import { TM_KEY_VERSION, deriveCacheIdentity, parseCacheKey } from '@verbosia/core';
+
+const identity = deriveCacheIdentity({
+  sourceText: 'Olá',
+  sourceLang: 'pt-BR',
+  targetLang: 'en',
+  targetVariant: 'en-US',
+  provider: 'anthropic',
+  model: 'claude-sonnet-5',
+  tone: null,
+  glossary: [],
+  doNotTranslate: [],
+  promptVersion: 'v1',
+});
+console.log(TM_KEY_VERSION, parseCacheKey(identity.key));
+```
+
+O runtime lê e grava somente `v2:<contextDigest>:<sourceDigest>`. Entradas v1 não são
+promovidas nem sincronizadas; a limpeza local é explícita e o Redis legado é preservado.
 
 Normalmente você não usa o core diretamente — use o adapter do seu framework ([`@verbosia/astro`](https://npmjs.com/package/@verbosia/astro), [`@verbosia/eleventy`](https://npmjs.com/package/@verbosia/eleventy), [`@verbosia/next`](https://npmjs.com/package/@verbosia/next)) e a CLI [`verbosia`](https://npmjs.com/package/verbosia).
 

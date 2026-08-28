@@ -1,6 +1,8 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { parseCacheKey } from '../cache-key.js';
 import type { CacheDriver, TMEntry } from '../types.js';
+import { invalidTMStorage, parseTMStore, validateTMEntry } from './entry.js';
 
 /**
  * Cache-driver `file` — Tier 1, a fonte de verdade comitável.
@@ -16,33 +18,39 @@ import type { CacheDriver, TMEntry } from '../types.js';
 export class FileCacheDriver implements CacheDriver {
   readonly name = 'file' as const;
   private readonly file: string;
-  private loadPromise: Promise<Record<string, TMEntry>> | null = null;
+  private loadPromise: Promise<Record<string, unknown>> | null = null;
   private writeChain: Promise<void> = Promise.resolve();
 
   constructor(cacheDir: string) {
     this.file = join(cacheDir, 'tm.json');
   }
 
-  private load(): Promise<Record<string, TMEntry>> {
+  private load(): Promise<Record<string, unknown>> {
     this.loadPromise ??= readFile(this.file, 'utf8')
-      .then((raw) => JSON.parse(raw) as Record<string, TMEntry>)
-      .catch(() => ({}) as Record<string, TMEntry>);
+      .then(parseTMStore)
+      .catch((error: unknown) => {
+        if ((error as NodeJS.ErrnoException | undefined)?.code === 'ENOENT') {
+          return Object.create(null) as Record<string, unknown>;
+        }
+        throw invalidTMStorage();
+      });
     return this.loadPromise;
   }
 
   async get(key: string): Promise<TMEntry | null> {
     const store = await this.load();
-    return store[key] ?? null;
+    if (!parseCacheKey(key) || !Object.hasOwn(store, key)) return null;
+    return validateTMEntry(store[key]);
   }
 
   async set(key: string, entry: TMEntry): Promise<void> {
     const store = await this.load();
-    store[key] = entry;
+    store[key] = parseCacheKey(key) ? validateTMEntry(entry) : entry;
     await this.flush();
   }
 
   async keys(): Promise<string[]> {
-    return Object.keys(await this.load());
+    return Object.keys(await this.load()).sort();
   }
 
   /** Remove uma entrada. O chamador deve `flush()` para persistir. */
@@ -55,8 +63,11 @@ export class FileCacheDriver implements CacheDriver {
   flush(): Promise<void> {
     this.writeChain = this.writeChain.then(async () => {
       const store = await this.load();
-      const ordered: Record<string, TMEntry> = {};
-      for (const key of Object.keys(store).sort()) ordered[key] = store[key]!;
+      const ordered = Object.fromEntries(
+        Object.keys(store)
+          .sort()
+          .map((key) => [key, store[key]!] as const),
+      );
       await mkdir(join(this.file, '..'), { recursive: true });
       await writeFile(this.file, JSON.stringify(ordered, null, 2) + '\n', 'utf8');
     });

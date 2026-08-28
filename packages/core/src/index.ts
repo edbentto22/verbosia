@@ -29,7 +29,14 @@ export {
   localizedFrontmatter,
 } from './segmentation.js';
 export { mask, allTokensPresent, expectedTokens, TOKENS } from './masking.js';
-export { cacheKey, glossaryVersion, sourceHash } from './cache-key.js';
+export {
+  TM_KEY_VERSION,
+  deriveCacheIdentity,
+  parseCacheKey,
+  cacheKey,
+  glossaryVersion,
+  sourceHash,
+} from './cache-key.js';
 export {
   createCacheDriver,
   createCacheDrivers,

@@ -22,7 +22,7 @@ O servidor escuta **apenas em `127.0.0.1`** — nada sai da máquina.
 Salvar não grava só o arquivo. A edição é gravada **de volta na Translation Memory**, segmento a segmento:
 
 1. O corpo editado é re-dividido em blocos e pareado com os segmentos de origem.
-2. Cada bloco editado atualiza a entrada da TM daquele segmento — sob o modelo que traduziu o arquivo **e** o modelo configurado (cobre trocas de provider).
+2. Cada bloco editado atualiza as chaves v2 deduplicadas do contexto histórico registrado e do contexto configurado atual quando ele pode ser derivado. Contexto legado ausente nunca é inventado.
 3. Campos de frontmatter editados idem.
 4. Com Redis ativo, a edição vai para o Tier 2 também — **toda a agência herda a revisão humana**.
 

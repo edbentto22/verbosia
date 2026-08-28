@@ -1,12 +1,17 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import matter from 'gray-matter';
-import { cacheKey, glossaryVersion } from './cache-key.js';
+import {
+  TM_KEY_VERSION,
+  composeCacheKey,
+  deriveCacheIdentity,
+  sourceTextDigest,
+} from './cache-key.js';
 import { FileCacheDriver, createCacheDrivers } from './cache-drivers/index.js';
 import { discover } from './discovery.js';
 import { getPath, resolveFieldPaths, setPath } from './frontmatter-paths.js';
 import { segment, splitBody } from './segmentation.js';
 import { localizedPath } from './translate.js';
-import type { CacheDriver, ResolvedConfig, Segment, SourceDocument } from './types.js';
+import type { ResolvedConfig, Segment, SourceDocument, TMEntry } from './types.js';
 
 /**
  * Revisão humana.
@@ -89,29 +94,46 @@ export async function getReviewDoc(
   return { docId, targetLang, source, translated };
 }
 
-/** Grava uma entrada de TM para (sourceText, targetLang) sob os modelos dados. */
-async function setTM(
-  drivers: CacheDriver[],
+type PlannedTMEntry = Omit<TMEntry, 'ts'>;
+
+/** Plans deduplicated historical/current v2 keys for one reviewed source. */
+function planTM(
+  plan: Map<string, PlannedTMEntry>,
   config: ResolvedConfig,
   sourceText: string,
   targetLang: string,
-  models: Set<string>,
   text: string,
-): Promise<number> {
-  const gv = glossaryVersion(config.glossary, config.doNotTranslate);
-  let writes = 0;
-  for (const model of models) {
-    const key = cacheKey({
-      sourceText,
-      targetLang,
-      model,
-      glossaryVersion: gv,
-      promptVersion: config.promptVersion,
-    });
-    for (const d of drivers) await d.set(key, { text, model, ts: Date.now() });
-    writes++;
+  historical: { contextDigest: string; model: string } | null,
+): void {
+  const current = deriveCacheIdentity({
+    sourceText,
+    sourceLang: config.source,
+    targetLang,
+    targetVariant: config.variant[targetLang] ?? null,
+    provider: config.provider,
+    model: config.model,
+    tone: config.tone ?? null,
+    glossary: config.glossary,
+    doNotTranslate: config.doNotTranslate,
+    promptVersion: config.promptVersion,
+  });
+  const keys = new Map<string, string>();
+  if (historical) {
+    const key = composeCacheKey(historical.contextDigest, sourceTextDigest(sourceText));
+    if (key) keys.set(key, historical.model);
   }
-  return writes;
+  keys.set(current.key, config.model);
+
+  for (const [key, model] of keys) {
+    const existing = plan.get(key);
+    if (existing) {
+      if (existing.text !== text || existing.model !== model) {
+        throw new Error('[verbosia] revisão conflitante para texto de origem repetido.');
+      }
+      continue;
+    }
+    plan.set(key, { text, model });
+  }
 }
 
 /**
@@ -136,49 +158,70 @@ export async function applyReview(
     );
   }
 
-  // Modelos sob os quais gravar: o que traduziu o arquivo + o configurado.
-  const verbosiaMeta = (existing.data?.verbosia ?? {}) as { translatedBy?: string };
-  const models = new Set<string>([config.model]);
-  if (verbosiaMeta.translatedBy) models.add(verbosiaMeta.translatedBy);
+  const verbosiaMeta = (existing.data?.verbosia ?? {}) as {
+    translatedBy?: string;
+    tmKeyVersion?: number;
+    contextDigest?: string;
+  };
+  const historicalKey =
+    verbosiaMeta.tmKeyVersion === TM_KEY_VERSION &&
+    typeof verbosiaMeta.contextDigest === 'string' &&
+    /^[0-9a-f]{64}$/.test(verbosiaMeta.contextDigest)
+      ? {
+          contextDigest: verbosiaMeta.contextDigest,
+          model:
+            typeof verbosiaMeta.translatedBy === 'string' && verbosiaMeta.translatedBy.trim()
+              ? verbosiaMeta.translatedBy
+              : config.model,
+        }
+      : null;
 
-  const drivers = createCacheDrivers(config);
-  let tmUpdated = 0;
   let tmSkipped = false;
+  const plan = new Map<string, PlannedTMEntry>();
 
-  try {
-    // 1. Corpo: pareia blocos editados com segmentos de origem.
-    const sourceSegs: Segment[] = segment(doc, config).filter((s) => s.path.startsWith('body'));
-    const editedBlocks =
-      config.segmentation === 'document' ? [input.body.trim()] : splitBody(input.body);
+  // 1. Corpo: pareia blocos editados com segmentos de origem.
+  const sourceSegs: Segment[] = segment(doc, config).filter((s) => s.path.startsWith('body'));
+  const editedBlocks =
+    config.segmentation === 'document' ? [input.body.trim()] : splitBody(input.body);
 
-    if (sourceSegs.length === editedBlocks.length) {
-      for (let i = 0; i < sourceSegs.length; i++) {
-        const seg = sourceSegs[i]!;
-        if (seg.translatable === false) continue; // passthrough não vive na TM
-        tmUpdated += await setTM(
-          drivers,
-          config,
-          seg.text,
-          input.targetLang,
-          models,
-          editedBlocks[i]!,
-        );
-      }
-    } else {
-      tmSkipped = true; // revisor mudou a estrutura de parágrafos
+  if (sourceSegs.length === editedBlocks.length) {
+    for (let i = 0; i < sourceSegs.length; i++) {
+      const seg = sourceSegs[i]!;
+      if (seg.translatable === false) continue; // passthrough não vive na TM
+      planTM(
+        plan,
+        config,
+        seg.text,
+        input.targetLang,
+        editedBlocks[i]!,
+        historicalKey,
+      );
     }
+  } else {
+    tmSkipped = true; // revisor mudou a estrutura de parágrafos
+  }
 
-    // 2. Campos de frontmatter (chaves são caminhos concretos, ex.: 'hero.title').
-    for (const [field, edited] of Object.entries(input.fields)) {
-      const sourceValue = getPath(doc.frontmatter, field);
-      if (typeof sourceValue === 'string' && sourceValue.trim() && edited.trim()) {
-        tmUpdated += await setTM(drivers, config, sourceValue, input.targetLang, models, edited);
-      }
+  // 2. Campos de frontmatter (chaves são caminhos concretos, ex.: 'hero.title').
+  for (const [field, edited] of Object.entries(input.fields)) {
+    const sourceValue = getPath(doc.frontmatter, field);
+    if (typeof sourceValue === 'string' && sourceValue.trim() && edited.trim()) {
+      planTM(plan, config, sourceValue, input.targetLang, edited, historicalKey);
     }
+  }
 
-    for (const d of drivers) if (d instanceof FileCacheDriver) await d.flush();
-  } finally {
-    for (const d of drivers) await d.close?.();
+  // O plano inteiro (inclusive conflitos por source text repetido) está válido
+  // antes do primeiro set, evitando uma TM parcialmente atualizada.
+  if (plan.size) {
+    const drivers = createCacheDrivers(config);
+    const ts = Date.now();
+    try {
+      for (const [key, entry] of plan) {
+        for (const driver of drivers) await driver.set(key, { ...entry, ts });
+      }
+      for (const driver of drivers) if (driver instanceof FileCacheDriver) await driver.flush();
+    } finally {
+      for (const driver of drivers) await driver.close?.();
+    }
   }
 
   // 3. Grava o arquivo revisado, preservando o restante do frontmatter.
@@ -191,5 +234,5 @@ export async function applyReview(
   };
   await writeFile(outPath, matter.stringify(input.body.trim() + '\n', data), 'utf8');
 
-  return { file: outPath, tmUpdated, tmSkipped };
+  return { file: outPath, tmUpdated: plan.size, tmSkipped };
 }

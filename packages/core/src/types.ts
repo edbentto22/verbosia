@@ -64,15 +64,48 @@ export interface TranslatedSegment extends Segment {
   translatedBy: string;
   /** Origem do resultado na cascata de resolução. */
   source: 'file' | 'redis' | 'provider';
+  /** Versioned TM metadata. Absent only for passthrough segments. */
+  tmKeyVersion?: 2;
+  contextDigest?: string;
 }
 
-/** Chave de cache endereçada por conteúdo. */
+/**
+ * @deprecated Shape used by the pre-v2 cache key. Runtime TM paths no longer
+ * consume it; use {@link CacheIdentityInput} with `deriveCacheIdentity`.
+ */
 export interface CacheKeyInput {
   sourceText: string;
   targetLang: Lang;
   model: string;
   glossaryVersion: string;
   promptVersion: string;
+}
+
+/** Complete semantic input used to derive a Translation Memory v2 identity. */
+export interface CacheIdentityInput {
+  sourceText: string;
+  sourceLang: Lang;
+  targetLang: Lang;
+  targetVariant: string | null;
+  provider: ProviderName;
+  model: string;
+  tone: string | null;
+  glossary: string[];
+  doNotTranslate: string[];
+  promptVersion: string;
+}
+
+/** Collision-resistant Translation Memory v2 identity and its two digests. */
+export interface CacheIdentity {
+  key: string;
+  contextDigest: string;
+  sourceDigest: string;
+}
+
+/** Digests parsed from a valid external Translation Memory v2 key. */
+export interface ParsedCacheKey {
+  contextDigest: string;
+  sourceDigest: string;
 }
 
 /** Valor guardado na Translation Memory. */

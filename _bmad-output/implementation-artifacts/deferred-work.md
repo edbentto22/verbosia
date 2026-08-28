@@ -13,3 +13,19 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-1-3-implementar-brand-memory-e-overlays.md`
   summary: Verify the new Core runtime exports through the packed package artifact.
   evidence: Story 1.3 builds and tests the source package API, while tarball construction and consumer import canaries are explicit release portability and hardening gates.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-translation-memory-v2-hardening.md`
+  summary: Harden review locale boundaries before exposing mutation workflows beyond trusted local callers.
+  evidence: `applyReview` accepts `input.targetLang` without proving membership in configured targets, so path-like values can escape the intended localized-language directory; this predates TM v2 identity changes.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-translation-memory-v2-hardening.md`
+  summary: Restrict review frontmatter mutations to the configured translated-field allowlist and define blank-edit semantics.
+  evidence: Review currently accepts any client-supplied path backed by a string source value, and blank edits are saved without updating TM, allowing later translation to restore stale machine content; both behaviors predate TM v2.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-translation-memory-v2-hardening.md`
+  summary: Make committed Translation Memory file replacement atomic and crash-safe.
+  evidence: `FileCacheDriver.flush` writes `tm.json` directly, so interruption can truncate the entire store; TM v2 changed validation and identity but did not introduce this persistence pattern.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-translation-memory-v2-hardening.md`
+  summary: Add optimistic concurrency protection to shared Redis synchronization.
+  evidence: `tm:sync` resolves a winner after independent reads and writes without compare-and-set, so a newer concurrent Redis translation can be overwritten; the race existed in the original sync lifecycle.

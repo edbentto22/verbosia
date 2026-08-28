@@ -1,4 +1,5 @@
 import type { CacheDriver, TMEntry } from '../types.js';
+import { invalidTMStorage, validateTMEntry } from './entry.js';
 
 const PREFIX = 'tm:';
 
@@ -8,8 +9,8 @@ const PREFIX = 'tm:';
  * Chave `tm:{cacheKey}` -> JSON `{ text, model, ts }`. Pré-popula novos
  * projetos e evita retradução entre clientes (persona Agência). Usa o SDK
  * oficial `redis` (node-redis v4, peer dependency opcional, importado sob
- * demanda). Política de conflito: last-write-wins (o cache-key já isola por
- * conteúdo/modelo/glossário/prompt, então corridas reescrevem o mesmo valor).
+ * demanda). O driver permanece genérico; aceitação de versão e resolução de
+ * conflitos pertencem ao ciclo de vida da TM.
  */
 export class RedisCacheDriver implements CacheDriver {
   readonly name = 'redis' as const;
@@ -52,12 +53,17 @@ export class RedisCacheDriver implements CacheDriver {
   async get(key: string): Promise<TMEntry | null> {
     const client = await this.getClient();
     const raw = await client.get(PREFIX + key);
-    return raw ? (JSON.parse(raw) as TMEntry) : null;
+    if (raw === null) return null;
+    try {
+      return validateTMEntry(JSON.parse(raw));
+    } catch {
+      throw invalidTMStorage();
+    }
   }
 
   async set(key: string, entry: TMEntry): Promise<void> {
     const client = await this.getClient();
-    await client.set(PREFIX + key, JSON.stringify(entry));
+    await client.set(PREFIX + key, JSON.stringify(validateTMEntry(entry)));
   }
 
   async keys(): Promise<string[]> {
@@ -66,7 +72,7 @@ export class RedisCacheDriver implements CacheDriver {
     for await (const key of client.scanIterator({ MATCH: `${PREFIX}*`, COUNT: 200 })) {
       out.push(typeof key === 'string' ? key.slice(PREFIX.length) : String(key));
     }
-    return out;
+    return [...new Set(out)].sort();
   }
 
   async close(): Promise<void> {

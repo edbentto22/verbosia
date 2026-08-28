@@ -1,4 +1,4 @@
-import { cacheKey, glossaryVersion } from './cache-key.js';
+import { TM_KEY_VERSION, deriveCacheIdentity } from './cache-key.js';
 import { CallBudget, withRetry } from './limits.js';
 import { allTokensPresent, mask } from './masking.js';
 import type {
@@ -47,14 +47,19 @@ export async function resolveSegment(
     return { ...seg, targetLang, translated: seg.text, translatedBy: 'passthrough', source: 'file' };
   }
 
-  const gv = glossaryVersion(config.glossary, config.doNotTranslate);
-  const key = cacheKey({
+  const identity = deriveCacheIdentity({
     sourceText: seg.text,
+    sourceLang: config.source,
     targetLang,
+    targetVariant: config.variant[targetLang] ?? null,
+    provider: provider.name,
     model: config.model,
-    glossaryVersion: gv,
+    tone: config.tone ?? null,
+    glossary: config.glossary,
+    doNotTranslate: config.doNotTranslate,
     promptVersion: config.promptVersion,
   });
+  const key = identity.key;
 
   // Percorre os tiers na ordem; no primeiro hit, faz backfill nos anteriores.
   for (let i = 0; i < drivers.length; i++) {
@@ -67,13 +72,23 @@ export async function resolveSegment(
         translated: cached.text,
         translatedBy: cached.model,
         source: drivers[i]!.name === 'redis' ? 'redis' : 'file',
+        tmKeyVersion: TM_KEY_VERSION,
+        contextDigest: identity.contextDigest,
       };
     }
   }
 
   // Miss em modo plano — não gasta API, só sinaliza a chamada que ocorreria.
   if (opts.dryRun) {
-    return { ...seg, targetLang, translated: seg.text, translatedBy: config.model, source: 'provider' };
+    return {
+      ...seg,
+      targetLang,
+      translated: seg.text,
+      translatedBy: config.model,
+      source: 'provider',
+      tmKeyVersion: TM_KEY_VERSION,
+      contextDigest: identity.contextDigest,
+    };
   }
 
   // Miss real — chama o provider com o texto mascarado.
@@ -118,7 +133,15 @@ export async function resolveSegment(
   // Write-through em todos os tiers.
   for (const driver of drivers) await driver.set(key, entry);
 
-  return { ...seg, targetLang, translated, translatedBy: config.model, source: 'provider' };
+  return {
+    ...seg,
+    targetLang,
+    translated,
+    translatedBy: config.model,
+    source: 'provider',
+    tmKeyVersion: TM_KEY_VERSION,
+    contextDigest: identity.contextDigest,
+  };
 }
 
 /** Grava a entrada nos tiers anteriores ao que deu hit (pré-popula Tier 1). */
