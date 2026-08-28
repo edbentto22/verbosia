@@ -38,7 +38,7 @@ development_status:
   epic-1: in-progress
   1-1-publicar-contratos-e-schemas-portáteis: review
   1-2-construir-snapshot-local-seguro: review
-  1-3-implementar-brand-memory-e-overlays: backlog
+  1-3-implementar-brand-memory-e-overlays: review
   1-4-implementar-evidence-ledger: backlog
   1-5-implementar-policy-engine-determinístico: backlog
   1-6-expor-tools-mcp-aditivas: backlog

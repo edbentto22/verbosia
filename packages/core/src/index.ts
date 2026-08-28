@@ -98,3 +98,18 @@ export type {
   SnapshotErrorCode,
   SnapshotLimits,
 } from './snapshot/index.js';
+export {
+  BrandMemoryError,
+  loadBrandMemory,
+} from './brand-memory/index.js';
+export type {
+  BrandMemoryErrorCode,
+  DeepReadonly,
+  LoadBrandMemoryInput,
+  LoadedBrandMemory,
+} from './brand-memory/index.js';
+export { resolveBrandContext } from './context-resolution/index.js';
+export type {
+  ResolveBrandContextInput,
+  ResolvedBrandContextResult,
+} from './context-resolution/index.js';

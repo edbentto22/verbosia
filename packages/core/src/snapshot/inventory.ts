@@ -4,6 +4,7 @@ import { Buffer } from 'node:buffer';
 import {
   SnapshotChangedError,
   SnapshotError,
+  invalidSnapshotContent,
   isDetectableChangeError,
   invalidSnapshotInput,
   snapshotBoundaryViolation,
@@ -229,6 +230,7 @@ export async function collectSnapshotInventory(
   scopes: readonly PortablePath[],
   io: SnapshotReadOnlyIO,
   limits: Pick<SnapshotLimits, 'maxFiles' | 'maxInventoryEntries' | 'maxPortablePathBytes'>,
+  options: { readonly optionalExactFiles?: boolean } = {},
 ): Promise<SnapshotInventory> {
   const rootRecord = await inspectPath(root, '.', io);
   const records = new Map<PortablePath, InventoryRecord>();
@@ -243,6 +245,12 @@ export async function collectSnapshotInventory(
       record = await inspectPath(root, portablePath, io);
     } catch (error) {
       const code = (error as NodeJS.ErrnoException).code;
+      if (requestedScope && options.optionalExactFiles === true && code === 'ENOENT') {
+        return;
+      }
+      if (requestedScope && options.optionalExactFiles === true && code === 'ENOTDIR') {
+        throw invalidSnapshotContent();
+      }
       if (!requestedScope && (code === 'ENOENT' || code === 'ENOTDIR')) {
         throw new SnapshotChangedError();
       }
@@ -266,6 +274,7 @@ export async function collectSnapshotInventory(
       if (fileCount > limits.maxFiles) throw snapshotLimitExceeded();
       return;
     }
+    if (requestedScope && options.optionalExactFiles === true) throw invalidSnapshotContent();
 
     const names: string[] = [];
     let directory;

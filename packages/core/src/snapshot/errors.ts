@@ -11,6 +11,8 @@ const SAFE_MESSAGES: Readonly<Record<SnapshotErrorCode, string>> = Object.freeze
   STATE_CHANGED_DURING_READ: 'The local state changed while the snapshot was being read.',
 });
 
+const CONTENT_FAILURES = new WeakSet<SnapshotError>();
+
 /** Public failure with a closed code and a message that never includes local data. */
 export class SnapshotError extends Error {
   constructor(readonly code: SnapshotErrorCode) {
@@ -39,6 +41,17 @@ export class SnapshotChangedError extends Error {
 
 export function invalidSnapshotInput(): SnapshotError {
   return new SnapshotError('REQUEST_INVALID');
+}
+
+/** Internal classification only; public code/message/serialization remain unchanged. */
+export function invalidSnapshotContent(): SnapshotError {
+  const error = new SnapshotError('REQUEST_INVALID');
+  CONTENT_FAILURES.add(error);
+  return error;
+}
+
+export function isInvalidSnapshotContent(error: unknown): boolean {
+  return error instanceof SnapshotError && CONTENT_FAILURES.has(error);
 }
 
 export function snapshotBoundaryViolation(): SnapshotError {

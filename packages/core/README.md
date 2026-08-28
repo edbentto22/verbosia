@@ -136,4 +136,56 @@ to perform indistinguishable swap-back attacks. This layer performs no schema/do
 validation, quarantine, locator verification, supersession, policy decisions, cache,
 writes, network access, provider calls, or MCP behavior.
 
+## Brand Memory and deterministic context
+
+Core loads Brand Memory on demand from the single fixed path
+`.verbosia/brand/brand-memory.json` beneath an explicit project root. The loader uses the
+secure snapshot substrate, validates I-JSON and the published Brand Memory schema, checks
+portable identities and non-evidence references, normalizes strings to NFC and locales to
+canonical BCP 47, and returns a deeply immutable canonical model. It never reads the
+Evidence Ledger, Translation Memory, Context Packs, providers, caches, or databases and it
+does not write or migrate project state.
+
+```ts
+import { loadBrandMemory, resolveBrandContext } from '@verbosia/core';
+
+const memory = await loadBrandMemory({ projectRoot: '/real/workspace/root' });
+const context = await resolveBrandContext({
+  projectRoot: '/real/workspace/root',
+  request: {
+    contractVersion: '1.0.0',
+    locale: 'pt-BR',
+    market: 'br',
+    pageIntent: 'product',
+    contentType: 'landing-page',
+    channel: 'website',
+    audience: 'developers',
+    editorialRisk: 'medium',
+  },
+});
+
+console.log(memory.brandId, context.stateDigest);
+```
+
+Resolution uses exact selectors in the fixed order `locale -> market -> pageIntent ->
+contentType -> channel -> audience`. Missing market, page intent, content type, channel,
+or audience values become `unspecified`. Missing editorial risk, page intent, or content
+type makes effective risk `critical`; otherwise applicable risk floors may only raise the
+requested risk. Voice leaves are ordered replacements, terminology and Claim membership
+uses remove-then-add ID sets, restrictions are additive and scope-filtered, and all final
+set-like collections use portable-ID order.
+
+`ResolvedBrandContext` exposes Claims only as `claimId`, `statement`, and `status`. It does
+not expose evidence or approval IDs, paths, raw bytes, schema-validator details, stacks, or
+free-form metadata. Every successful resolution emits exactly one stable
+`HISTORY_UNVERIFIED` warning. The reproducible `stateDigest` covers canonical Brand Memory
+and fixed contract/policy framing; request, selected overlays, diagnostics, and evaluation
+time are deliberately excluded.
+
+Failures throw `BrandMemoryError`, whose public surface is a closed safe code plus immutable
+contract-valid diagnostics. Missing, invalid, unsupported-version, duplicate-ID,
+unresolved-reference, resource, boundary, and concurrent-change states fail without a
+partial result. CTA IDs, example IDs, and compliance patches remain deferred until typed
+catalogs and output fields exist; their presence is rejected rather than ignored.
+
 [Documentação completa](../../docs/README.md) · MIT

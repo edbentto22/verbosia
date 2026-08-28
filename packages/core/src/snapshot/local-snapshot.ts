@@ -76,11 +76,16 @@ async function oneSnapshotAttempt(
   request: LocalJsonSnapshotRequest,
   options: SnapshotTestOptions,
   limits: Readonly<SnapshotLimits>,
+  optionalExactFile = false,
 ): Promise<LocalJsonSnapshot> {
   const io = options.io ?? NODE_SNAPSHOT_IO;
   const root = await resolveSnapshotRoot(request.projectRoot, io);
   const scopes = normalizeScopes(request.paths, limits);
-  const before = await collectSnapshotInventory(root, scopes, io, limits);
+  if (optionalExactFile && (scopes.length !== 1 || scopes[0] === '.')) {
+    throw new SnapshotError('REQUEST_INVALID');
+  }
+  const inventoryOptions = optionalExactFile ? { optionalExactFiles: true } : undefined;
+  const before = await collectSnapshotInventory(root, scopes, io, limits, inventoryOptions);
 
   let totalBytes = 0;
   for (const file of before.files) {
@@ -109,7 +114,7 @@ async function oneSnapshotAttempt(
 
   let after;
   try {
-    after = await collectSnapshotInventory(root, scopes, io, limits);
+    after = await collectSnapshotInventory(root, scopes, io, limits, inventoryOptions);
   } catch (error) {
     if (error instanceof SnapshotChangedError || isDetectableChangeError(error)) {
       throw new SnapshotChangedError();
@@ -132,6 +137,7 @@ async function oneSnapshotAttempt(
 export async function readLocalJsonSnapshotForTesting(
   request: LocalJsonSnapshotRequest,
   options: SnapshotTestOptions = {},
+  optionalExactFile = false,
 ): Promise<LocalJsonSnapshot> {
   let limits: Readonly<SnapshotLimits>;
   try {
@@ -143,7 +149,7 @@ export async function readLocalJsonSnapshotForTesting(
   let lastError: unknown;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
-      return await oneSnapshotAttempt(request, options, limits);
+      return await oneSnapshotAttempt(request, options, limits, optionalExactFile);
     } catch (error) {
       lastError = error;
       if (!(error instanceof SnapshotChangedError)) throw sanitizeSnapshotError(error);
@@ -155,4 +161,19 @@ export async function readLocalJsonSnapshotForTesting(
 /** Read an atomic, deterministic, root-bounded snapshot of local JSON files. */
 export function readLocalJsonSnapshot(request: LocalJsonSnapshotRequest): Promise<LocalJsonSnapshot> {
   return readLocalJsonSnapshotForTesting(request);
+}
+
+/** Internal exact-file seam. An empty stable snapshot means the file is absent. */
+export function readOptionalExactJsonFileSnapshotForTesting(
+  request: LocalJsonSnapshotRequest,
+  options: SnapshotTestOptions = {},
+): Promise<LocalJsonSnapshot> {
+  return readLocalJsonSnapshotForTesting(request, options, true);
+}
+
+/** Internal production entry point; deliberately omitted from snapshot/index.ts. */
+export function readOptionalExactJsonFileSnapshot(
+  request: LocalJsonSnapshotRequest,
+): Promise<LocalJsonSnapshot> {
+  return readOptionalExactJsonFileSnapshotForTesting(request);
 }

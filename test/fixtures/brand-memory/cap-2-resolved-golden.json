@@ -1,0 +1,77 @@
+{
+  "contractVersion": "1.0.0",
+  "evaluationTime": "2026-08-27T15:00:00.000Z",
+  "schemaVersions": [
+    { "schemaId": "https://schemas.verbosia.dev/contracts/v1/brand-memory.schema.json", "version": "1.0.0" },
+    { "schemaId": "https://schemas.verbosia.dev/contracts/v1/resolved-brand-context.schema.json", "version": "1.0.0" }
+  ],
+  "stateDigest": "sha256:ae88b1f1d3b99812314dae9ee7449dc016cb018e43d261e254aecc5f6fe26c27",
+  "brandId": "verbosia",
+  "revision": "1.3.0",
+  "context": {
+    "locale": "pt-BR",
+    "market": "br",
+    "pageIntent": "product",
+    "contentType": "landing-page",
+    "channel": "website",
+    "audience": "developers",
+    "editorialRisk": "medium"
+  },
+  "effectiveEditorialRisk": "high",
+  "identity": {
+    "name": "Verbosia",
+    "legalName": "Verbosia Labs",
+    "description": "Deterministic multilingual brand context.",
+    "website": "https://verbosia.dev"
+  },
+  "voice": {
+    "toneTraits": ["direct", "clear"],
+    "avoidTraits": ["hype", "guarantees"],
+    "styleInstructions": ["Lead with the verified outcome."]
+  },
+  "audiences": [
+    { "audienceId": "developers", "label": "Developers", "description": "Implementation teams." },
+    { "audienceId": "executives", "label": "Executives", "description": "Decision makers." }
+  ],
+  "offerings": [
+    { "offeringId": "core", "name": "Core", "description": "Provider-neutral core.", "status": "active" }
+  ],
+  "differentiators": [
+    { "differentiatorId": "deterministic", "statement": "Resolution is deterministic.", "claimIds": ["claim-a", "claim-b"] }
+  ],
+  "terminology": [
+    { "termId": "term-a", "sourceTerm": "memory", "preferred": [{ "locale": "pt-BR", "value": "memória" }], "forbidden": [] },
+    { "termId": "term-b", "sourceTerm": "claim", "preferred": [{ "locale": "pt-BR", "value": "alegação" }], "forbidden": [] }
+  ],
+  "restrictions": [
+    { "restrictionId": "restriction-base", "classification": "brand", "text": "Avoid unverifiable promises." },
+    { "restrictionId": "restriction-br", "classification": "regulatory", "text": "Brazil scope.", "scope": { "market": "br" } },
+    { "restrictionId": "restriction-developers", "classification": "safety", "text": "Do not expose internals.", "scope": { "audience": "developers" } },
+    { "restrictionId": "restriction-website", "classification": "privacy", "text": "Public-safe fields only.", "scope": { "channel": "website" } }
+  ],
+  "claims": [
+    { "claimId": "claim-a", "statement": "Resolution is deterministic.", "status": "approved" },
+    { "claimId": "claim-b", "statement": "The core is provider-neutral.", "status": "suspended" }
+  ],
+  "appliedOverlayIds": [
+    "overlay-locale",
+    "overlay-market",
+    "overlay-page-intent",
+    "overlay-content-type",
+    "overlay-channel",
+    "overlay-audience"
+  ],
+  "diagnostics": [
+    {
+      "severityRank": 1,
+      "severity": "warning",
+      "code": "HISTORY_UNVERIFIED",
+      "relativePath": "",
+      "jsonPointer": "",
+      "claimId": "",
+      "evidenceId": "",
+      "message": "Brand Memory history has not been independently verified.",
+      "remediation": "Verify history with a trusted repository attestation."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/diagnostic.schema.json",
+  "caseId": "diagnostic/history-unverified",
+  "valid": true,
+  "instance": {
+    "severityRank": 1,
+    "severity": "warning",
+    "code": "HISTORY_UNVERIFIED",
+    "relativePath": "",
+    "jsonPointer": "",
+    "claimId": "",
+    "evidenceId": "",
+    "message": "Brand Memory history has not been independently verified.",
+    "remediation": "Verify history with a trusted repository attestation."
+  }
+}

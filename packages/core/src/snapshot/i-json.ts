@@ -1,6 +1,6 @@
 import { TextDecoder } from 'node:util';
 import {
-  invalidSnapshotInput,
+  invalidSnapshotContent as invalidSnapshotInput,
   snapshotLimitExceeded,
 } from './errors.js';
 import { SNAPSHOT_LIMITS } from './limits.js';

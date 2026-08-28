@@ -93,4 +93,34 @@ describe('portable contract registry conventions', () => {
       }
     }
   });
+
+  it('publishes the closed diagnostic vocabulary including HISTORY_UNVERIFIED', () => {
+    const schema = input.schemas.get('diagnostic.schema.json') as {
+      properties: { code: { enum: string[] } };
+    };
+    expect(schema.properties.code.enum).toEqual([
+      'BRAND_MEMORY_NOT_FOUND',
+      'BRAND_MEMORY_INVALID',
+      'CONTRACT_SCHEMA_INVALID',
+      'CONTRACT_VERSION_UNSUPPORTED',
+      'DUPLICATE_ID',
+      'EVIDENCE_ENVELOPE_INVALID',
+      'EVIDENCE_PAYLOAD_INVALID',
+      'EVIDENCE_QUARANTINED',
+      'HISTORY_UNVERIFIED',
+      'ID_FILENAME_MISMATCH',
+      'OUTPUT_LIMIT_EXCEEDED',
+      'OVERRIDE_FORBIDDEN',
+      'POLICY_RULE_INVALID',
+      'REFERENCE_NOT_FOUND',
+      'REQUEST_INVALID',
+      'RESOURCE_LIMIT_EXCEEDED',
+      'ROOT_BOUNDARY_VIOLATION',
+      'SOURCE_DIGEST_MISMATCH',
+      'STATE_CHANGED_DURING_READ',
+      'SUPERSESSION_CYCLE',
+      'SUPERSESSION_DANGLING',
+      'SUPERSESSION_FORK',
+    ]);
+  });
 });
