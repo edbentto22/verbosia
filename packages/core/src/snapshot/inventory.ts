@@ -196,6 +196,28 @@ async function inspectPath(
   return { path: portablePath, absolutePath, stat };
 }
 
+async function validateOptionalAncestors(
+  root: string,
+  portablePath: PortablePath,
+  io: SnapshotReadOnlyIO,
+): Promise<void> {
+  if (portablePath === '.') return;
+  const segments = portablePath.split('/');
+  for (let index = 1; index < segments.length; index += 1) {
+    const ancestor = segments.slice(0, index).join('/');
+    let record: InventoryRecord;
+    try {
+      record = await inspectPath(root, ancestor, io);
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === 'ENOENT') return;
+      if (code === 'ENOTDIR') throw invalidSnapshotContent();
+      throw error;
+    }
+    if (record.stat.kind !== 'directory') throw invalidSnapshotContent();
+  }
+}
+
 export function sameSnapshotStat(left: SnapshotStat, right: SnapshotStat): boolean {
   return left.kind === right.kind
     && left.dev === right.dev
@@ -230,7 +252,11 @@ export async function collectSnapshotInventory(
   scopes: readonly PortablePath[],
   io: SnapshotReadOnlyIO,
   limits: Pick<SnapshotLimits, 'maxFiles' | 'maxInventoryEntries' | 'maxPortablePathBytes'>,
-  options: { readonly optionalExactFiles?: boolean } = {},
+  options: {
+    readonly optionalExactFiles?: boolean;
+    readonly optionalPaths?: ReadonlySet<PortablePath>;
+    readonly exactFilePaths?: ReadonlySet<PortablePath>;
+  } = {},
 ): Promise<SnapshotInventory> {
   const rootRecord = await inspectPath(root, '.', io);
   const records = new Map<PortablePath, InventoryRecord>();
@@ -240,15 +266,23 @@ export async function collectSnapshotInventory(
 
   const visit = async (portablePath: PortablePath, requestedScope: boolean): Promise<void> => {
     if (records.has(portablePath)) return;
+    const optional = requestedScope && (
+      options.optionalExactFiles === true || options.optionalPaths?.has(portablePath) === true
+    );
+    const exactFile = requestedScope && (
+      options.optionalExactFiles === true || options.exactFilePaths?.has(portablePath) === true
+    );
     let record: InventoryRecord;
     try {
       record = await inspectPath(root, portablePath, io);
     } catch (error) {
       const code = (error as NodeJS.ErrnoException).code;
-      if (requestedScope && options.optionalExactFiles === true && code === 'ENOENT') {
-        return;
+      if (optional && (code === 'ENOENT' || code === 'ENOTDIR')) {
+        await validateOptionalAncestors(root, portablePath, io);
+        if (code === 'ENOENT') return;
+        throw invalidSnapshotContent();
       }
-      if (requestedScope && options.optionalExactFiles === true && code === 'ENOTDIR') {
+      if (exactFile && code === 'ENOTDIR') {
         throw invalidSnapshotContent();
       }
       if (!requestedScope && (code === 'ENOENT' || code === 'ENOTDIR')) {
@@ -274,7 +308,7 @@ export async function collectSnapshotInventory(
       if (fileCount > limits.maxFiles) throw snapshotLimitExceeded();
       return;
     }
-    if (requestedScope && options.optionalExactFiles === true) throw invalidSnapshotContent();
+    if (exactFile) throw invalidSnapshotContent();
 
     const names: string[] = [];
     let directory;

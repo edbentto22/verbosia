@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceId": "evidence-a",
+  "recordedAt": "2026-08-27T15:00:00Z",
+  "source": {
+    "sourceType": "document",
+    "title": "Launch evidence",
+    "locator": { "type": "project_file", "value": "docs/source-a.txt" },
+    "capturedAt": "2026-08-27T15:00:00Z",
+    "sourceDigest": "sha256:2bc9cd29a8ac2bae0de211c69f73fab3700b00801c28ad35afe76d25da3c42a4"
+  },
+  "provenance": {
+    "originType": "first_party",
+    "collectedAt": "2026-08-27T15:00:00Z",
+    "publisher": "Private publisher",
+    "actor": "Private actor"
+  },
+  "permission": {
+    "mode": "claim_support",
+    "basis": "owned",
+    "purpose": "Support the verified launch claim.",
+    "scope": { "locale": "pt-BR" },
+    "attestedBy": "brand-owner",
+    "attestedAt": "2026-08-27T15:00:00Z",
+    "restricted": false
+  },
+  "supportRole": "direct",
+  "scope": { "locale": "pt-BR" },
+  "validity": { "validFrom": "2026-08-27T15:00:00Z" },
+  "sensitivity": "internal"
+}

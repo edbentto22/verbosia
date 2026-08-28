@@ -211,4 +211,48 @@ unresolved-reference, resource, boundary, and concurrent-change states fail with
 partial result. CTA IDs, example IDs, and compliance patches remain deferred until typed
 catalogs and output fields exist; their presence is rejected rather than ignored.
 
+## Evidence Ledger
+
+Core reads Evidence Records only from direct
+`.verbosia/evidence/<evidence-id>.json` files beneath an explicit real project root. A
+missing directory is an empty ledger. Layout, I-JSON, envelope, filename/ID, duplicate-ID,
+unsupported-major, boundary, mutation, and resource failures are global and fail without
+partial state. Schema-invalid payloads, source-digest failures, and invalid supersession
+components are quarantined behind opaque safe projections.
+
+```ts
+import { evaluateEvidence, loadEvidenceLedger } from '@verbosia/core';
+
+const ledger = await loadEvidenceLedger({ projectRoot: '/real/workspace/root' });
+const evaluation = evaluateEvidence({
+  ledger,
+  context: {
+    locale: 'pt-BR',
+    market: 'br',
+    pageIntent: 'product',
+    contentType: 'landing-page',
+    channel: 'website',
+    audience: 'developers',
+    editorialRisk: 'medium',
+  },
+});
+
+console.log(evaluation.entries);
+```
+
+`project_file` locators are hashed from stable raw bytes in the same retryable read attempt
+as the ledger. Missing local files, `public_uri` locators, and `record_reference` locators
+are unavailable; V1 performs no URI/reference resolution, network, provider, database,
+Redis, fallback, migration, cache, or write. Supersession is a
+linear successor-to-predecessor history that activates at the successor's `validFrom` and
+never redirects a Claim. Evaluation is default-deny with half-open validity, exact record
+and permission scopes, direct support role, non-restricted permission, and closed ordered
+states/reasons. Restricted sensitivity changes reference exposure only. Public results do
+not include canonical records, source locators, excerpts, provenance actors, source bytes,
+absolute paths, stacks, secrets, or free-form metadata.
+
+Repository history is separately guarded by `pnpm evidence:add-only:check -- --base <sha>
+--head <sha>`. Additions beneath any root or nested `.verbosia/evidence/` pass; modification,
+deletion, and rename fail.
+
 [Documentação completa](../../docs/README.md) · MIT
