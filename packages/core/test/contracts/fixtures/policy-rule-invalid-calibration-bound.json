@@ -1,0 +1,10 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json", "caseId": "policy-rule/calibration-bound", "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "ruleId": "block-hype", "version": "1.0.0", "title": "Block hype", "scope": {},
+    "conditions": [{ "fact": "claim.kind", "operator": "equals", "values": ["hype"] }], "effect": "blocking", "evidence": [], "recommendation": "Use evidence.", "automaticAction": "none",
+    "reference": { "title": "Policy", "uri": "https://verbosia.dev/policy" }, "tests": [{ "caseId": "hype", "facts": [], "expectedMatch": true }],
+    "calibration": { "sampleSize": 10, "agreementRate": 1.1, "methodologyRef": "https://verbosia.dev/calibration", "approvedBy": "owner", "approvedAt": "2026-08-27T15:00:00Z" }
+  },
+  "expected": { "keyword": "maximum", "instancePath": "/calibration/agreementRate" }
+}

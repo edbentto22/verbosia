@@ -1,0 +1,7 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/inspect-brand-context-request.schema.json",
+  "caseId": "formats/bcp47-grandfathered",
+  "valid": true,
+  "instance": { "contractVersion": "1.0.0", "locale": "i-klingon" }
+}

@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/evidence-record.schema.json",
+  "title": "EvidenceRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SchemaVersion" },
+    "evidenceId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "recordedAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+    "source": { "$ref": "#/$defs/EvidenceSource" },
+    "provenance": { "$ref": "#/$defs/EvidenceProvenance" },
+    "permission": { "$ref": "#/$defs/EvidencePermission" },
+    "supportRole": { "type": "string", "enum": ["direct", "corroborative", "signal", "inference", "hypothesis"] },
+    "scope": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContextScope" },
+    "validity": { "$ref": "#/$defs/EvidenceValidity" },
+    "sensitivity": { "type": "string", "enum": ["public", "internal", "confidential", "restricted"] },
+    "supersedes": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" }
+  },
+  "required": ["schemaVersion", "evidenceId", "recordedAt", "source", "provenance", "permission", "supportRole", "scope", "validity", "sensitivity"],
+  "$defs": {
+    "EvidenceLocator": {
+      "title": "EvidenceLocator",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "project_file" },
+            "value": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ProjectRelativePath" }
+          },
+          "required": ["type", "value"]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "public_uri" },
+            "value": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/AbsoluteUri" }
+          },
+          "required": ["type", "value"]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "record_reference" },
+            "value": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" }
+          },
+          "required": ["type", "value"]
+        }
+      ]
+    },
+    "EvidencePermission": {
+      "title": "EvidencePermission",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string", "enum": ["claim_support", "signal_only", "prohibited"] },
+        "basis": { "type": "string", "enum": ["owned", "authorized", "licensed", "public_reference", "restricted"] },
+        "purpose": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "scope": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContextScope" },
+        "attestedBy": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "attestedAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+        "reviewAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+        "expiresAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+        "revokedAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+        "restricted": { "type": "boolean" }
+      },
+      "required": ["mode", "basis", "purpose", "scope", "attestedBy", "attestedAt", "restricted"]
+    },
+    "EvidenceProvenance": {
+      "title": "EvidenceProvenance",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "originType": { "type": "string", "enum": ["first_party", "third_party", "community", "generated"] },
+        "collectedAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+        "publisher": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "actor": { "type": "string", "minLength": 1, "maxLength": 300 }
+      },
+      "required": ["originType", "collectedAt"]
+    },
+    "EvidenceSource": {
+      "title": "EvidenceSource",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceType": { "type": "string", "enum": ["document", "web_page", "dataset", "record", "observation"] },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "locator": { "$ref": "#/$defs/EvidenceLocator" },
+        "capturedAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+        "sourceDigest": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Digest" },
+        "excerpt": { "type": "string", "minLength": 1, "maxLength": 4000 }
+      },
+      "required": ["sourceType", "title", "locator", "capturedAt", "sourceDigest"]
+    },
+    "EvidenceValidity": {
+      "title": "EvidenceValidity",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "validFrom": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+        "validUntil": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" }
+      },
+      "required": ["validFrom"]
+    }
+  },
+  "examples": [
+    {
+      "schemaVersion": "1.0.0",
+      "evidenceId": "launch-note-2026",
+      "recordedAt": "2026-08-27T15:00:00Z",
+      "source": {
+        "sourceType": "document",
+        "title": "Launch note",
+        "locator": { "type": "project_file", "value": "docs/launch.md" },
+        "capturedAt": "2026-08-27T15:00:00Z",
+        "sourceDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "provenance": { "originType": "first_party", "collectedAt": "2026-08-27T15:00:00Z" },
+      "permission": {
+        "mode": "claim_support",
+        "basis": "owned",
+        "purpose": "Support an approved launch claim.",
+        "scope": { "locale": "pt-BR" },
+        "attestedBy": "brand-owner",
+        "attestedAt": "2026-08-27T15:00:00Z",
+        "restricted": false
+      },
+      "supportRole": "direct",
+      "scope": { "locale": "pt-BR" },
+      "validity": { "validFrom": "2026-08-27T15:00:00Z" },
+      "sensitivity": "internal"
+    }
+  ]
+}

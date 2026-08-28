@@ -1,0 +1,9 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json", "caseId": "semver/leading-zero-prerelease", "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "ruleId": "bad-semver", "version": "1.0.0-01", "title": "Bad SemVer", "scope": {},
+    "conditions": [{ "fact": "claim.kind", "operator": "equals", "values": ["hype"] }], "effect": "warning", "evidence": [], "recommendation": "Fix the version.", "automaticAction": "none",
+    "reference": { "title": "Policy", "uri": "https://verbosia.dev/policy" }, "tests": [{ "caseId": "semver", "facts": [], "expectedMatch": false }]
+  },
+  "expected": { "keyword": "pattern", "instancePath": "/version" }
+}

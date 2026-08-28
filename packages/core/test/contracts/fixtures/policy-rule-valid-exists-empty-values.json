@@ -1,0 +1,8 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json", "caseId": "policy-rule/exists-empty-values", "valid": true,
+  "instance": {
+    "schemaVersion": "1.0.0", "ruleId": "exists-empty", "version": "1.0.0", "title": "Exists uses no values", "scope": {},
+    "conditions": [{ "fact": "claim.kind", "operator": "exists", "values": [] }], "effect": "warning", "evidence": [], "recommendation": "Review the present fact.", "automaticAction": "none",
+    "reference": { "title": "Policy", "uri": "https://verbosia.dev/policy" }, "tests": [{ "caseId": "exists", "facts": [], "expectedMatch": true }]
+  }
+}

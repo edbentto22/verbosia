@@ -12,8 +12,8 @@ export ANTHROPIC_API_KEY=sk-ant-...   # BYOK (ou OPENAI/GEMINI/DEEPL_API_KEY)
 | `verbosia translate [--dry-run]` | Traduz o que mudou; dry-run estima custo sem gastar |
 | `verbosia status` | fresh/stale/missing por documento (exit 1 se incompleto — gate de CI) |
 | `verbosia review [--port 5199]` | Editor local de revisão; edições voltam para a TM |
-| `verbosia prune [--dry-run]` | Remove traduções e TM órfãs (agnóstico de modelo) |
-| `verbosia tm:sync` | Sincroniza TM arquivo ↔ Redis |
+| `verbosia prune [--dry-run]` | Classifica/remove órfãs v2 e legado/malformadas locais; Redis é só contado |
+| `verbosia tm:sync` | Sincroniza somente TM v2; reporta legado/malformadas por tier |
 
 Config em `verbosia.config.mjs`:
 

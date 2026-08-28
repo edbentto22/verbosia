@@ -376,7 +376,7 @@ Com `uiStrings: 'src/i18n/pt.json'`, cada folha `string` vira um segmento e o Ve
 
 ### `translate`
 
-Descobre documentos, resolve segmentos pela TM e grava as versões localizadas. A tradução é idempotente para a mesma combinação de texto, alvo, modelo, glossário e versão de prompt.
+Descobre documentos, resolve segmentos pela TM e grava as versões localizadas. A tradução é idempotente para a mesma combinação exata de origem, alvo/variante, provider real, modelo, tom, listas ordenadas de termos, prompt e texto.
 
 ### `status`
 
@@ -392,11 +392,11 @@ O estado de revisão não altera sozinho o exit code.
 
 ### `prune`
 
-Remove arquivos localizados cuja origem deixou de existir e chaves da TM local sem uso vivo. O Redis nunca é podado. Comece sempre com `--dry-run`.
+Remove arquivos localizados cuja origem deixou de existir, v2 local sem texto exato vivo e entradas v1/malformadas locais. O Redis nunca é podado; entradas legadas/malformadas compartilhadas são apenas contadas. Comece sempre com `--dry-run`.
 
 ### `tm:sync`
 
-Faz a união entre arquivo e Redis, escolhendo a entrada de timestamp mais recente. Exige `cache.driver: 'redis'` e `cache.url`.
+Faz a união somente de chaves v2 entre arquivo e Redis, escolhendo a entrada de timestamp mais recente; em empate divergente, vence o Tier 1 comitável. V1/malformadas são ignoradas e reportadas. Exige `cache.driver: 'redis'` e `cache.url`.
 
 ### `review`
 
@@ -404,11 +404,15 @@ Abre o editor em `127.0.0.1`. A porta padrão é `5199` e pode ser alterada com 
 
 ## Translation Memory
 
-A chave de cache é:
+A chave de cache v2 é:
 
 ```text
-sha256(sourceText | targetLang | model | glossaryVersion | promptVersion)
+v2:sha256(JCS(contexto exato)):sha256(utf8(sourceText exato))
 ```
+
+O contexto contém idioma de origem, alvo, variante, provider real, modelo, tom,
+`glossary` e `doNotTranslate` separados e ordenados, além da versão do prompt. Campos
+opcionais ausentes são `null`; não há trim, sort ou normalização Unicode implícita.
 
 Isso significa:
 
@@ -417,7 +421,7 @@ Isso significa:
 | Nenhuma mudança | 100% de hits possíveis |
 | Um parágrafo editado | Só aquele segmento recebe chave nova |
 | Modelo alterado | Traduções antigas permanecem e a nova versão ganha outras chaves |
-| Glossário alterado | O `glossaryVersion` muda |
+| Termos alterados, reparticionados ou reordenados | O contexto exato muda |
 | Prompt do produto versionado | As entradas afetadas são invalidadas |
 
 ### Cascata de resolução
@@ -436,6 +440,10 @@ Provider BYOK
 - Bloco sem prosa: passthrough, sem TM e sem API.
 
 O arquivo `tm.json` é serializado com chaves ordenadas para produzir diffs estáveis.
+
+Entradas v1 (`64hex`) nunca são lidas, promovidas ou sincronizadas como v2. Tradução
+normal as preserva e grava apenas v2; a limpeza local é explícita e dry-run-aware. O
+Redis compartilhado nunca tem legado removido automaticamente.
 
 > [!CAUTION]
 > O Redis compartilha traduções por chave de conteúdo e não implementa isolamento por cliente. Use apenas entre projetos confiáveis e com direitos compatíveis sobre o conteúdo; prefira instâncias ou namespaces separados quando houver confidencialidade ou separação entre clientes.

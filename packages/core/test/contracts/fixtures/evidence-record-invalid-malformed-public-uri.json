@@ -1,0 +1,14 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/evidence-record.schema.json",
+  "caseId": "formats/uri-malformed",
+  "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "evidenceId": "malformed-uri", "recordedAt": "2026-08-27T15:00:00Z",
+    "source": { "sourceType": "web_page", "title": "Malformed URI", "locator": { "type": "public_uri", "value": "not a uri" }, "capturedAt": "2026-08-27T15:00:00Z", "sourceDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+    "provenance": { "originType": "third_party", "collectedAt": "2026-08-27T15:00:00Z" },
+    "permission": { "mode": "signal_only", "basis": "public_reference", "purpose": "Reject malformed URI", "scope": {}, "attestedBy": "owner", "attestedAt": "2026-08-27T15:00:00Z", "restricted": false },
+    "supportRole": "signal", "scope": {}, "validity": { "validFrom": "2026-08-27T15:00:00Z" }, "sensitivity": "public"
+  },
+  "expected": { "keyword": "format", "instancePath": "/source/locator/value" }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/inspect-brand-context-request.schema.json",
+  "title": "InspectBrandContextRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contractVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContractVersion" },
+    "locale": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Bcp47Tag" },
+    "market": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "pageIntent": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "contentType": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "channel": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "audience": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "editorialRisk": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/EditorialRisk" }
+  },
+  "required": ["contractVersion", "locale"],
+  "examples": [{ "contractVersion": "1.0.0", "locale": "pt-BR", "market": "br" }]
+}

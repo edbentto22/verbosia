@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0.0",
+  "brandId": "verbosia",
+  "revision": "1.3.0",
+  "updatedAt": "2026-08-27T15:00:00Z",
+  "identity": {
+    "name": "Verbosia",
+    "legalName": "Verbosia Labs",
+    "description": "Deterministic multilingual brand context.",
+    "website": "https://verbosia.dev"
+  },
+  "voice": {
+    "toneTraits": ["clear", "precise"],
+    "avoidTraits": ["hype"],
+    "styleInstructions": ["Prefer verifiable statements."]
+  },
+  "audiences": [
+    { "audienceId": "executives", "label": "Executives", "description": "Decision makers." },
+    { "audienceId": "developers", "label": "Developers", "description": "Implementation teams." }
+  ],
+  "offerings": [
+    { "offeringId": "core", "name": "Core", "description": "Provider-neutral core.", "status": "active" }
+  ],
+  "differentiators": [
+    { "differentiatorId": "deterministic", "statement": "Resolution is deterministic.", "claimIds": ["claim-b", "claim-a"] }
+  ],
+  "terminology": [
+    { "termId": "term-c", "sourceTerm": "guardrail", "preferred": [{ "locale": "PT-br", "value": "proteção" }], "forbidden": [] },
+    { "termId": "term-a", "sourceTerm": "memory", "preferred": [{ "locale": "pt-BR", "value": "memória" }], "forbidden": [] },
+    { "termId": "term-b", "sourceTerm": "claim", "preferred": [{ "locale": "pt-br", "value": "alegação" }], "forbidden": [] }
+  ],
+  "restrictions": [
+    { "restrictionId": "restriction-us", "classification": "legal", "text": "US only.", "scope": { "market": "us" } },
+    { "restrictionId": "restriction-base", "classification": "brand", "text": "Avoid unverifiable promises." },
+    { "restrictionId": "restriction-br", "classification": "regulatory", "text": "Brazil scope.", "scope": { "market": "br" } }
+  ],
+  "claims": [
+    { "claimId": "claim-c", "statement": "Claims remain globally defined.", "status": "draft", "evidenceIds": [] },
+    { "claimId": "claim-a", "statement": "Resolution is deterministic.", "status": "approved", "evidenceIds": ["evidence-a"], "approval": { "approvedBy": "brand-owner", "approvedAt": "2026-08-27T15:00:00Z" } },
+    { "claimId": "claim-b", "statement": "The core is provider-neutral.", "status": "suspended", "evidenceIds": ["evidence-b"] }
+  ],
+  "editorialRiskMinimums": [
+    { "scope": { "locale": "pt-BR", "market": "br" }, "minimumRisk": "high" },
+    { "scope": { "market": "us" }, "minimumRisk": "critical" }
+  ],
+  "overlays": [
+    {
+      "overlayId": "overlay-audience",
+      "selector": { "dimension": "audience", "value": "developers" },
+      "patch": {
+        "set": { "styleInstructions": ["Lead with the verified outcome."] },
+        "removeIds": { "terminologyIds": ["term-c"], "claimIds": ["claim-c"] },
+        "addRestrictions": [{ "restrictionId": "restriction-developers", "classification": "safety", "text": "Do not expose internals.", "scope": { "audience": "developers" } }]
+      }
+    },
+    {
+      "overlayId": "overlay-channel",
+      "selector": { "dimension": "channel", "value": "website" },
+      "patch": { "addRestrictions": [{ "restrictionId": "restriction-website", "classification": "privacy", "text": "Public-safe fields only.", "scope": { "channel": "website" } }] }
+    },
+    {
+      "overlayId": "overlay-content-type",
+      "selector": { "dimension": "contentType", "value": "landing-page" },
+      "patch": { "addIds": { "terminologyIds": ["term-b"], "claimIds": ["claim-b"] } }
+    },
+    {
+      "overlayId": "overlay-locale",
+      "selector": { "dimension": "locale", "value": "pt-BR" },
+      "patch": { "set": { "toneTraits": ["direct", "clear"] }, "removeIds": { "terminologyIds": ["term-a"], "claimIds": ["claim-a"] } }
+    },
+    {
+      "overlayId": "overlay-market",
+      "selector": { "dimension": "market", "value": "br" },
+      "patch": { "set": { "avoidTraits": ["hype", "guarantees"] }, "addIds": { "terminologyIds": ["term-a"], "claimIds": ["claim-a"] } }
+    },
+    {
+      "overlayId": "overlay-page-intent",
+      "selector": { "dimension": "pageIntent", "value": "product" },
+      "patch": { "removeIds": { "terminologyIds": ["term-b"], "claimIds": ["claim-b"] } }
+    }
+  ]
+}

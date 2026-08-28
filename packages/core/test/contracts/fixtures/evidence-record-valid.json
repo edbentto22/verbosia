@@ -1,0 +1,18 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/evidence-record.schema.json",
+  "caseId": "evidence-record/valid",
+  "valid": true,
+  "instance": {
+    "schemaVersion": "1.0.0",
+    "evidenceId": "contract-tests",
+    "recordedAt": "2026-08-27T15:00:00Z",
+    "source": { "sourceType": "document", "title": "Contract tests", "locator": { "type": "project_file", "value": "packages/core/test/contracts" }, "capturedAt": "2026-08-27T15:00:00Z", "sourceDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+    "provenance": { "originType": "first_party", "collectedAt": "2026-08-27T15:00:00Z" },
+    "permission": { "mode": "claim_support", "basis": "owned", "purpose": "Contract verification", "scope": {}, "attestedBy": "brand-owner", "attestedAt": "2026-08-27T15:00:00Z", "restricted": false },
+    "supportRole": "direct",
+    "scope": {},
+    "validity": { "validFrom": "2026-08-27T15:00:00Z" },
+    "sensitivity": "internal"
+  }
+}

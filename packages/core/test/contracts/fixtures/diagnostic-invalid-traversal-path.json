@@ -1,0 +1,5 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/diagnostic.schema.json", "caseId": "diagnostic/traversal-path", "valid": false,
+  "instance": { "severityRank": 2, "severity": "error", "code": "CONTRACT_SCHEMA_INVALID", "relativePath": "docs/../secret.txt", "jsonPointer": "", "claimId": "", "evidenceId": "", "message": "Invalid path.", "remediation": "Remove traversal segments." },
+  "expected": { "keyword": "pattern", "instancePath": "/relativePath" }
+}

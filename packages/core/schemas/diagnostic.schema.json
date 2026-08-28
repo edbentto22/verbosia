@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/diagnostic.schema.json",
+  "title": "Diagnostic",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "severityRank": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "severity": { "type": "string", "enum": ["info", "warning", "error", "fatal"] },
+    "code": {
+      "type": "string",
+      "enum": [
+        "BRAND_MEMORY_NOT_FOUND",
+        "BRAND_MEMORY_INVALID",
+        "CONTRACT_SCHEMA_INVALID",
+        "CONTRACT_VERSION_UNSUPPORTED",
+        "DUPLICATE_ID",
+        "EVIDENCE_ENVELOPE_INVALID",
+        "EVIDENCE_PAYLOAD_INVALID",
+        "EVIDENCE_QUARANTINED",
+        "HISTORY_UNVERIFIED",
+        "ID_FILENAME_MISMATCH",
+        "OUTPUT_LIMIT_EXCEEDED",
+        "OVERRIDE_FORBIDDEN",
+        "POLICY_RULE_INVALID",
+        "REFERENCE_NOT_FOUND",
+        "REQUEST_INVALID",
+        "RESOURCE_LIMIT_EXCEEDED",
+        "ROOT_BOUNDARY_VIOLATION",
+        "SOURCE_DIGEST_MISMATCH",
+        "STATE_CHANGED_DURING_READ",
+        "SUPERSESSION_CYCLE",
+        "SUPERSESSION_DANGLING",
+        "SUPERSESSION_FORK"
+      ]
+    },
+    "relativePath": {
+      "oneOf": [
+        { "const": "" },
+        { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ProjectRelativePath" }
+      ]
+    },
+    "jsonPointer": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/JsonPointer" },
+    "claimId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/EmptyOrPortableId" },
+    "evidenceId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/EmptyOrPortableId" },
+    "message": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "remediation": { "type": "string", "minLength": 1, "maxLength": 2000 }
+  },
+  "required": ["severityRank", "severity", "code", "relativePath", "jsonPointer", "claimId", "evidenceId", "message", "remediation"],
+  "allOf": [
+    { "if": { "properties": { "severityRank": { "const": 0 } }, "required": ["severityRank"] }, "then": { "properties": { "severity": { "const": "info" } } } },
+    { "if": { "properties": { "severityRank": { "const": 1 } }, "required": ["severityRank"] }, "then": { "properties": { "severity": { "const": "warning" } } } },
+    { "if": { "properties": { "severityRank": { "const": 2 } }, "required": ["severityRank"] }, "then": { "properties": { "severity": { "const": "error" } } } },
+    { "if": { "properties": { "severityRank": { "const": 3 } }, "required": ["severityRank"] }, "then": { "properties": { "severity": { "const": "fatal" } } } }
+  ],
+  "examples": [
+    {
+      "severityRank": 2,
+      "severity": "error",
+      "code": "CONTRACT_SCHEMA_INVALID",
+      "relativePath": ".verbosia/brand/brand-memory.json",
+      "jsonPointer": "/brandId",
+      "claimId": "",
+      "evidenceId": "",
+      "message": "The brand contract is invalid.",
+      "remediation": "Correct the reported contract field."
+    }
+  ]
+}

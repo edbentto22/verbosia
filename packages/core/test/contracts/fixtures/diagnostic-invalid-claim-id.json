@@ -1,0 +1,5 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/diagnostic.schema.json", "caseId": "diagnostic/claim-id", "valid": false,
+  "instance": { "severityRank": 2, "severity": "error", "code": "CONTRACT_SCHEMA_INVALID", "relativePath": "brand-memory.json", "jsonPointer": "/claims/0", "claimId": "Bad_ID", "evidenceId": "", "message": "Invalid ID.", "remediation": "Use a PortableId." },
+  "expected": { "keyword": "pattern", "instancePath": "/claimId" }
+}

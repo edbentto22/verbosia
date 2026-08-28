@@ -1,0 +1,9 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json", "caseId": "policy-rule/exists-with-values", "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "ruleId": "exists-values", "version": "1.0.0", "title": "Exists has no values", "scope": {},
+    "conditions": [{ "fact": "claim.kind", "operator": "exists", "values": ["unexpected"] }], "effect": "warning", "evidence": [], "recommendation": "Remove values.", "automaticAction": "none",
+    "reference": { "title": "Policy", "uri": "https://verbosia.dev/policy" }, "tests": [{ "caseId": "exists", "facts": [], "expectedMatch": true }]
+  },
+  "expected": { "keyword": "maxItems", "instancePath": "/conditions/0/values" }
+}

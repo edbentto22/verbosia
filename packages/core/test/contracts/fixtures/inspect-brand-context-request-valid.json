@@ -1,0 +1,7 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/inspect-brand-context-request.schema.json",
+  "caseId": "inspect-brand-context-request/valid",
+  "valid": true,
+  "instance": { "contractVersion": "1.0.0", "locale": "pt-BR" }
+}

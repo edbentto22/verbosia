@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/common.schema.json",
+  "title": "CommonDefinitions",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {},
+  "$defs": {
+    "AbsoluteUri": {
+      "title": "AbsoluteUri",
+      "type": "string",
+      "format": "uri",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "Bcp47Tag": {
+      "title": "Bcp47Tag",
+      "type": "string",
+      "format": "verbosia-bcp47",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "ContractVersion": {
+      "title": "ContractVersion",
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "ContextDimensions": {
+      "title": "ContextDimensions",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "locale": { "$ref": "#/$defs/Bcp47Tag" },
+        "market": { "$ref": "#/$defs/PortableId" },
+        "pageIntent": { "$ref": "#/$defs/PortableId" },
+        "contentType": { "$ref": "#/$defs/PortableId" },
+        "channel": { "$ref": "#/$defs/PortableId" },
+        "audience": { "$ref": "#/$defs/PortableId" },
+        "editorialRisk": { "$ref": "#/$defs/EditorialRisk" }
+      },
+      "required": [
+        "locale",
+        "market",
+        "pageIntent",
+        "contentType",
+        "channel",
+        "audience",
+        "editorialRisk"
+      ]
+    },
+    "ContextScope": {
+      "title": "ContextScope",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "locale": { "$ref": "#/$defs/Bcp47Tag" },
+        "market": { "$ref": "#/$defs/PortableId" },
+        "pageIntent": { "$ref": "#/$defs/PortableId" },
+        "contentType": { "$ref": "#/$defs/PortableId" },
+        "channel": { "$ref": "#/$defs/PortableId" },
+        "audience": { "$ref": "#/$defs/PortableId" },
+        "editorialRisk": { "$ref": "#/$defs/EditorialRisk" }
+      }
+    },
+    "DateTime": {
+      "title": "DateTime",
+      "type": "string",
+      "format": "date-time"
+    },
+    "Digest": {
+      "title": "Digest",
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "EmptyOrPortableId": {
+      "title": "EmptyOrPortableId",
+      "oneOf": [
+        { "const": "" },
+        { "$ref": "#/$defs/PortableId" }
+      ]
+    },
+    "EditorialRisk": {
+      "title": "EditorialRisk",
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "Outcome": {
+      "title": "Outcome",
+      "type": "string",
+      "enum": ["allow", "allow_with_constraints", "review_required", "block"]
+    },
+    "PortableId": {
+      "title": "PortableId",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9](?:[a-z0-9._-]{0,126}[a-z0-9])?$"
+    },
+    "ProjectRelativePath": {
+      "title": "ProjectRelativePath",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?!/)(?![A-Za-z]:[\\\\/])(?!\\\\\\\\)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*\\\\)(?!.*(?:^|/)\\.\\.?(?:/|$))[^/\\u0000]+(?:/[^/\\u0000]+)*$"
+    },
+    "JsonPointer": {
+      "title": "JsonPointer",
+      "type": "string",
+      "maxLength": 1024,
+      "pattern": "^(?:|(?:/(?:[^~/]|~[01])*)+)$"
+    },
+    "RuleRef": {
+      "title": "RuleRef",
+      "type": "string",
+      "pattern": "^[a-z0-9](?:[a-z0-9._-]{0,126}[a-z0-9])?@(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "RuleEffect": {
+      "title": "RuleEffect",
+      "type": "string",
+      "enum": ["informational", "warning", "blocking"]
+    },
+    "SchemaVersion": {
+      "title": "SchemaVersion",
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "SemVer": {
+      "title": "SemVer",
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    }
+  },
+  "examples": [{}]
+}

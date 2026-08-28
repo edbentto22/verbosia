@@ -69,6 +69,10 @@ describe('translate + status (integração)', () => {
     expect(en.data.title).toBe('[en] Meu Post');
     expect(en.data.slug).toBe('meu-post'); // slug preservado
     expect(en.data.verbosia.reviewed).toBe(false);
+    expect(en.data.verbosia.tmKeyVersion).toBe(2);
+    expect(en.data.verbosia.contextDigest).toMatch(/^[0-9a-f]{64}$/);
+    expect(en.data.verbosia).not.toHaveProperty('sourceText');
+    expect(en.data.verbosia).not.toHaveProperty('glossary');
     // Código e URL restaurados intactos (masking round-trip).
     expect(en.content).toContain('`código`');
     expect(en.content).toContain('https://ex.com');

@@ -1,0 +1,10 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/brand-memory.schema.json", "caseId": "brand-memory/overlay-locale-format", "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0", "brandId": "verbosia", "revision": "1.0.0", "updatedAt": "2026-08-27T15:00:00Z",
+    "identity": { "name": "Verbosia" }, "voice": { "toneTraits": [], "avoidTraits": [], "styleInstructions": [] },
+    "audiences": [], "offerings": [], "differentiators": [], "terminology": [], "restrictions": [], "claims": [], "editorialRiskMinimums": [],
+    "overlays": [{ "overlayId": "bad-locale", "selector": { "dimension": "locale", "value": "pt_BR" }, "patch": { "set": { "toneTraits": ["clear"] } } }]
+  },
+  "expected": { "keyword": "format", "instancePath": "/overlays/0/selector/value" }
+}

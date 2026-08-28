@@ -1,0 +1,13 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/evidence-record.schema.json",
+  "caseId": "evidence-locator/public-uri",
+  "valid": true,
+  "instance": {
+    "schemaVersion": "1.0.0", "evidenceId": "public-source", "recordedAt": "2026-08-27T15:00:00Z",
+    "source": { "sourceType": "web_page", "title": "Public source", "locator": { "type": "public_uri", "value": "https://example.com/source" }, "capturedAt": "2026-08-27T15:00:00Z", "sourceDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+    "provenance": { "originType": "third_party", "collectedAt": "2026-08-27T15:00:00Z" },
+    "permission": { "mode": "claim_support", "basis": "public_reference", "purpose": "Portable locator proof", "scope": {}, "attestedBy": "owner", "attestedAt": "2026-08-27T15:00:00Z", "restricted": false },
+    "supportRole": "direct", "scope": {}, "validity": { "validFrom": "2026-08-27T15:00:00Z" }, "sensitivity": "public"
+  }
+}

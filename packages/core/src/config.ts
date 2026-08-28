@@ -24,10 +24,14 @@ export function resolveConfig(user: VerbaUserConfig, cwd: string = process.cwd()
   }
 
   const provider = user.provider ?? 'anthropic';
+  const model = user.model ?? DEFAULT_MODEL[provider] ?? DEFAULT_MODEL.anthropic!;
+  if (typeof model !== 'string' || model.trim().length === 0) {
+    throw new Error('[verbosia] config.model deve ser uma string não vazia');
+  }
 
   return {
     provider,
-    model: user.model ?? DEFAULT_MODEL[provider] ?? DEFAULT_MODEL.anthropic!,
+    model,
     source: user.source,
     targets: [...new Set(user.targets)],
     variant: user.variant ?? {},

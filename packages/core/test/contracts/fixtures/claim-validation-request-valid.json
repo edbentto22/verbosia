@@ -1,0 +1,11 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/claim-validation-request.schema.json",
+  "caseId": "claim-validation-request/valid",
+  "valid": true,
+  "instance": {
+    "contractVersion": "1.0.0",
+    "context": { "locale": "en-US", "market": "us", "pageIntent": "product", "contentType": "landing-page", "channel": "website", "audience": "developers", "editorialRisk": "medium" },
+    "candidates": [{ "candidateId": "candidate-1", "text": "Contracts are portable.", "claimIds": ["portable-contracts"] }]
+  }
+}

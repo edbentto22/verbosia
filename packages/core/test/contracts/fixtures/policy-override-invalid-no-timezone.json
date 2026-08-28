@@ -1,0 +1,8 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-override.schema.json",
+  "caseId": "formats/date-time-no-timezone",
+  "valid": false,
+  "instance": { "schemaVersion": "1.0.0", "overrideId": "no-timezone", "ruleRef": "avoid-hype@1.0.0", "scope": {}, "effect": "blocking", "justification": "Timezone is required.", "approvalRef": "approval-1", "validFrom": "2026-08-27T15:00:00" },
+  "expected": { "keyword": "format", "instancePath": "/validFrom" }
+}

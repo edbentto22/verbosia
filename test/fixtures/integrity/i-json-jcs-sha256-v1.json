@@ -1,0 +1,41 @@
+{
+  "format": "verbosia.i-json-jcs-sha256-vectors",
+  "version": 1,
+  "accepted": [
+    {
+      "name": "object-order",
+      "inputHex": "207b202262223a20322c202261223a2031207d0a",
+      "canonicalHex": "7b2261223a312c2262223a327d",
+      "sha256": "sha256:43258cff783fe7036d8a43033f830adfc60ec037382473548ac742b888292777"
+    },
+    {
+      "name": "unicode-order",
+      "inputHex": "7b22e282ac223a224575726f205369676e222c225c72223a2243617272696167652052657475726e222c2231223a224f6e65222c22f09f9880223a22456d6f6a69222c22c3b6223a224c6174696e20536d616c6c204c6574746572204f205769746820446961657265736973227d",
+      "canonicalHex": "7b225c72223a2243617272696167652052657475726e222c2231223a224f6e65222c22c3b6223a224c6174696e20536d616c6c204c6574746572204f205769746820446961657265736973222c22e282ac223a224575726f205369676e222c22f09f9880223a22456d6f6a69227d",
+      "sha256": "sha256:35bc1121f88942f9e16b544d5467ceeae99038006767ebaa3a31e93cea02d9dd"
+    },
+    {
+      "name": "numbers-and-array",
+      "inputHex": "7b227a223a2d302c226e223a312e302c2265223a31652d372c226172726179223a5b332c322c315d7d",
+      "canonicalHex": "7b226172726179223a5b332c322c315d2c2265223a31652d372c226e223a312c227a223a307d",
+      "sha256": "sha256:09f1062addff3a94d137bc0511a7fb19cf2c96a49da10feb2fd61227a94f5f27"
+    },
+    {
+      "name": "rfc-8785-finite-double-formatting",
+      "inputHex": "7b22736d616c6c223a302e3030322c2274696e79223a31652d32372c22646563696d616c223a342e35307d",
+      "canonicalHex": "7b22646563696d616c223a342e352c22736d616c6c223a302e3030322c2274696e79223a31652d32377d",
+      "sha256": "sha256:8e635b98d5afc5534e159e3315c1b64b21928491e9f7cd16b48ae6125989af17"
+    }
+  ],
+  "rejected": [
+    { "name": "bom", "inputHex": "efbbbf7b7d", "code": "REQUEST_INVALID" },
+    { "name": "malformed-utf8", "inputHex": "c328", "code": "REQUEST_INVALID" },
+    { "name": "duplicate-decoded-key", "inputHex": "7b2261223a312c225c7530303631223a327d", "code": "REQUEST_INVALID" },
+    { "name": "lone-surrogate", "inputHex": "7b2273223a225c7564383030227d", "code": "REQUEST_INVALID" },
+    { "name": "unsafe-integer", "inputHex": "7b226e223a393030373139393235343734303939327d", "code": "REQUEST_INVALID" },
+    { "name": "unsafe-integer-fraction-spelling", "inputHex": "7b226e223a393030373139393235343734303939322e307d", "code": "REQUEST_INVALID" },
+    { "name": "unsafe-integer-exponent-spelling", "inputHex": "7b226e223a392e3030373139393235343734303939326531357d", "code": "REQUEST_INVALID" },
+    { "name": "number-overflow", "inputHex": "7b226e223a31653430307d", "code": "REQUEST_INVALID" },
+    { "name": "number-underflow", "inputHex": "7b226e223a31652d343030307d", "code": "REQUEST_INVALID" }
+  ]
+}

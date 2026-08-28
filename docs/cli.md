@@ -38,11 +38,11 @@ Editor local de revisão em `http://127.0.0.1:5199`. Ver [Revisão humana](revis
 
 ## `verbosia prune [--dry-run]`
 
-Remove arquivos localizados órfãos (origem apagada) e entradas de TM sem uso vivo. Agnóstico de modelo (nunca apaga traduções de outro provider); nunca toca o Redis. Ver [Translation Memory](translation-memory.md).
+Remove arquivos localizados órfãos, v2 local sem `sourceDigest` vivo e entradas v1/malformadas locais. O dry-run e a mutação exibem as mesmas classificações. Entradas Redis legadas/malformadas são contadas, nunca apagadas. Ver [Translation Memory](translation-memory.md).
 
 ## `verbosia tm:sync`
 
-Sincroniza a TM entre o arquivo comitável e o Redis (união, last-write-wins por timestamp). Requer `cache: { driver: 'redis', url }`.
+Sincroniza somente v2 entre o arquivo comitável e o Redis. O timestamp mais recente vence; em empate divergente, vence o arquivo Tier 1. V1 e chaves malformadas são ignoradas e reportadas por tier. Requer `cache: { driver: 'redis', url }`.
 
 ## Receitas
 

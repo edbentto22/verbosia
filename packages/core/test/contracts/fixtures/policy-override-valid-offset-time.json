@@ -1,0 +1,7 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/policy-override.schema.json",
+  "caseId": "formats/date-time-offset",
+  "valid": true,
+  "instance": { "schemaVersion": "1.0.0", "overrideId": "offset-time", "ruleRef": "avoid-hype@1.0.0", "scope": {}, "effect": "blocking", "justification": "Offset timestamps are RFC 3339.", "approvalRef": "approval-1", "validFrom": "2026-08-27T15:00:00+03:00" }
+}

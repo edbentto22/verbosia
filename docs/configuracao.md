@@ -98,7 +98,7 @@ Cada valor casado vira um segmento próprio na TM (editar um `heading` não retr
 
 ### `glossary` vs `doNotTranslate`
 
-Ambos são protegidos, com intenções diferentes: `glossary` são termos de marca/lugares que devem aparecer **idênticos** na tradução; `doNotTranslate` é a lista dura de nunca-traduzir. Os dois entram no hash `glossaryVersion` do cache-key — editar a lista invalida seletivamente as traduções afetadas.
+Ambos são protegidos, com intenções diferentes: `glossary` são termos de marca/lugares que devem aparecer **idênticos** na tradução; `doNotTranslate` é a lista dura de nunca-traduzir. Na TM v2, as duas listas entram separadas e na ordem declarada no contexto canônico — editar, mover entre listas ou reordenar termos invalida seletivamente as traduções afetadas.
 
 ### `variant`
 

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/policy-override.schema.json",
+  "title": "PolicyOverride",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SchemaVersion" },
+    "overrideId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "ruleRef": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/RuleRef" },
+    "scope": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContextScope" },
+    "effect": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/RuleEffect" },
+    "justification": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "approvalRef": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "validFrom": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" },
+    "validUntil": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" }
+  },
+  "required": ["schemaVersion", "overrideId", "ruleRef", "scope", "effect", "justification", "approvalRef", "validFrom"],
+  "examples": [
+    {
+      "schemaVersion": "1.0.0",
+      "overrideId": "market-review-2026",
+      "ruleRef": "avoid-unverified-ranking@1.0.0",
+      "scope": { "market": "br" },
+      "effect": "blocking",
+      "justification": "Local review requires a stricter outcome.",
+      "approvalRef": "approval-2026-08",
+      "validFrom": "2026-08-27T15:00:00Z"
+    }
+  ]
+}

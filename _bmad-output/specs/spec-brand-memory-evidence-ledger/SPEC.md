@@ -1,11 +1,13 @@
 ---
 id: SPEC-brand-memory-evidence-ledger
 companions:
+  - 'contracts-and-schemas.md'
   - 'acceptance-matrix.md'
   - '../../planning-artifacts/architecture/architecture-VERBOSIA-2026-08-27/ARCHITECTURE-SPINE.md'
 sources:
   - '../../../docs/briefs/brief-verbosia-mcp-2026-08-27/addendum.md'
   - '../../../docs/implementation/spec-mcp-read-only-foundation.md'
+  - '../../planning-artifacts/research/technical-runtime-json-schema-and-schema-to-typesc-2026-08-27/research.md'
 ---
 
 > **Contrato canônico.** Esta SPEC e os arquivos em `companions:` formam o contrato completo e validado do que deve ser construído, testado e demonstrado. Os documentos em `sources:` permanecem apenas para rastreabilidade.
@@ -62,6 +64,7 @@ O Verbosia precisa permitir que qualquer aplicação use contexto de marca multi
 - A V1 opera por `stdio`, com raiz explícita, somente leitura, sem banco, rede, OAuth, Redis, provider, publicação ou transporte remoto iniciado pelo código de análise.
 - Arquivos versionados são canônicos; evidências são add-only por Git/CI, correções usam `supersedes` e alterações seguem `draft -> validate -> approve -> apply`.
 - Contratos são schema-first em JSON Schema 2020-12; JCS/RFC 8785 e SHA-256 governam digests; schemas, fixtures e exports precisam anteceder qualquer implementação dependente.
+- A Story 1 usa Ajv 8.20.x em modo Draft 2020-12 estrito, `ajv-formats` 3.0.x, formato BCP 47 próprio apoiado por `bcp-47` 2.1.x e tipos estruturais gerados deterministicamente por `json-schema-to-typescript` 15.0.x; o [companion de contratos e schemas](contracts-and-schemas.md) é vinculante para registry, exports, fixtures e critérios de aceite dessa story.
 - A release deste slice exige Node 22+ e CI em Node 22/24; engines Node 18/20 deixam de ser suporte declarado.
 - Dados seguem minimização e default-deny: sem reviews de terceiros integrais, PII/segredos desnecessários, evidência restrita em outputs ou reutilização entre projetos/clientes.
 - IA pode extrair Claims e sugerir correspondências, mas somente o policy engine determinístico autoriza comunicação.
@@ -83,6 +86,5 @@ No cenário real fornecido pelo usuário, as quatro tools operam sem regressão 
 
 ## Open Questions
 
-- Qual runtime JSON Schema e pipeline schema→TypeScript serão adotados antes de CAP-1, comprovando Draft 2020-12, ESM, Node 22/24, `$ref` offline, formats semânticos e ausência de drift?
 - Qual tamanho de amostra e limiar de concordância entre revisores autorizarão uma `PolicyRule` editorial a passar de warning para blocking?
 - Qual cenário real, outcomes esperados e critérios de parada definirão o gate E2E final após a implementação?

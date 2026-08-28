@@ -1,0 +1,17 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/brand-memory.schema.json",
+  "caseId": "brand-memory/additional-property",
+  "valid": false,
+  "instance": {
+    "schemaVersion": "1.0.0",
+    "brandId": "verbosia",
+    "revision": "1.0.0",
+    "updatedAt": "2026-08-27T15:00:00Z",
+    "identity": { "name": "Verbosia" },
+    "voice": { "toneTraits": [], "avoidTraits": [], "styleInstructions": [] },
+    "audiences": [], "offerings": [], "differentiators": [], "terminology": [], "restrictions": [], "claims": [], "editorialRiskMinimums": [], "overlays": [],
+    "unexpected": true
+  },
+  "expected": { "keyword": "additionalProperties", "instancePath": "" }
+}

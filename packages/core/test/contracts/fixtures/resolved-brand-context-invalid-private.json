@@ -1,0 +1,18 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/resolved-brand-context.schema.json",
+  "caseId": "resolved-brand-context/private-evidence-ids",
+  "valid": false,
+  "instance": {
+    "contractVersion": "1.0.0", "evaluationTime": "2026-08-27T15:00:00Z",
+    "schemaVersions": [{ "schemaId": "https://schemas.verbosia.dev/contracts/v1/brand-memory.schema.json", "version": "1.0.0" }],
+    "stateDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "brandId": "verbosia", "revision": "1.0.0",
+    "context": { "locale": "es-419", "market": "latam", "pageIntent": "product", "contentType": "landing-page", "channel": "website", "audience": "developers", "editorialRisk": "medium" },
+    "effectiveEditorialRisk": "medium", "identity": { "name": "Verbosia" },
+    "voice": { "toneTraits": [], "avoidTraits": [], "styleInstructions": [] },
+    "audiences": [], "offerings": [], "differentiators": [], "terminology": [], "restrictions": [],
+    "claims": [{ "claimId": "portable-contracts", "statement": "Contracts are portable.", "status": "approved", "evidenceIds": ["private"] }],
+    "appliedOverlayIds": [], "diagnostics": []
+  },
+  "expected": { "keyword": "additionalProperties", "instancePath": "/claims/0" }
+}

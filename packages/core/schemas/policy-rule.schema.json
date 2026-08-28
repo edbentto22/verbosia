@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json",
+  "title": "PolicyRule",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SchemaVersion" },
+    "ruleId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "version": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SemVer" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+    "scope": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/ContextScope" },
+    "conditions": { "type": "array", "items": { "$ref": "#/$defs/PolicyCondition" }, "minItems": 1, "uniqueItems": true },
+    "effect": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/RuleEffect" },
+    "evidence": { "type": "array", "items": { "$ref": "#/$defs/PolicyEvidenceRequirement" }, "uniqueItems": true },
+    "recommendation": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "automaticAction": { "type": "string", "enum": ["none", "suggest", "safe_transform"] },
+    "reference": { "$ref": "#/$defs/PolicyReference" },
+    "tests": { "type": "array", "items": { "$ref": "#/$defs/PolicyRuleTest" }, "minItems": 1, "uniqueItems": true },
+    "calibration": { "$ref": "#/$defs/PolicyCalibration" }
+  },
+  "required": ["schemaVersion", "ruleId", "version", "title", "scope", "conditions", "effect", "evidence", "recommendation", "automaticAction", "reference", "tests"],
+  "allOf": [
+    {
+      "if": { "properties": { "effect": { "const": "blocking" } }, "required": ["effect"] },
+      "then": { "properties": { "calibration": { "$ref": "#/$defs/PolicyCalibration" } }, "required": ["calibration"] }
+    }
+  ],
+  "$defs": {
+    "PolicyCalibration": {
+      "title": "PolicyCalibration",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sampleSize": { "type": "integer", "minimum": 1 },
+        "agreementRate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "methodologyRef": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/AbsoluteUri" },
+        "approvedBy": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "approvedAt": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/DateTime" }
+      },
+      "required": ["sampleSize", "agreementRate", "methodologyRef", "approvedBy", "approvedAt"]
+    },
+    "PolicyCondition": {
+      "title": "PolicyCondition",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fact": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "operator": { "type": "string", "enum": ["equals", "in", "exists", "absent"] },
+        "values": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 500 }, "uniqueItems": true }
+      },
+      "required": ["fact", "operator", "values"],
+      "allOf": [
+        {
+          "if": {
+            "properties": { "operator": { "enum": ["equals", "in"] } },
+            "required": ["operator"]
+          },
+          "then": {
+            "properties": { "values": { "type": "array", "minItems": 1 } }
+          },
+          "else": {
+            "properties": { "values": { "type": "array", "maxItems": 0 } }
+          }
+        }
+      ]
+    },
+    "PolicyEvidenceRequirement": {
+      "title": "PolicyEvidenceRequirement",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "supportRoles": { "type": "array", "items": { "type": "string", "enum": ["direct", "corroborative", "signal", "inference", "hypothesis"] }, "minItems": 1, "uniqueItems": true },
+        "minimumCount": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "required": { "type": "boolean" }
+      },
+      "required": ["supportRoles", "minimumCount", "required"]
+    },
+    "PolicyReference": {
+      "title": "PolicyReference",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "uri": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/AbsoluteUri" }
+      },
+      "required": ["title", "uri"]
+    },
+    "PolicyRuleTest": {
+      "title": "PolicyRuleTest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "caseId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "facts": { "type": "array", "items": { "$ref": "#/$defs/PolicyTestFact" }, "uniqueItems": true },
+        "expectedMatch": { "type": "boolean" }
+      },
+      "required": ["caseId", "facts", "expectedMatch"]
+    },
+    "PolicyTestFact": {
+      "title": "PolicyTestFact",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fact": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "value": { "type": "string", "minLength": 1, "maxLength": 500 }
+      },
+      "required": ["fact", "value"]
+    }
+  },
+  "examples": [
+    {
+      "schemaVersion": "1.0.0",
+      "ruleId": "avoid-unverified-ranking",
+      "version": "1.0.0",
+      "title": "Avoid unverified ranking claims",
+      "scope": { "channel": "website" },
+      "conditions": [{ "fact": "claim.kind", "operator": "equals", "values": ["ranking"] }],
+      "effect": "warning",
+      "evidence": [{ "supportRoles": ["direct"], "minimumCount": 1, "required": true }],
+      "recommendation": "Use a verifiable description instead.",
+      "automaticAction": "suggest",
+      "reference": { "title": "Editorial policy", "uri": "https://verbosia.dev/policy" },
+      "tests": [{ "caseId": "ranking-claim", "facts": [{ "fact": "claim.kind", "value": "ranking" }], "expectedMatch": true }]
+    }
+  ]
+}

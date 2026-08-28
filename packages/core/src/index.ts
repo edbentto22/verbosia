@@ -6,6 +6,8 @@
  */
 
 export * from './types.js';
+export type * from './contracts/generated.js';
+export { CONTRACT_SCHEMA_IDS, CONTRACT_VERSION } from './contracts/constants.js';
 export { PROMPT_VERSION, resolveConfig } from './config.js';
 export {
   ProjectConfigError,
@@ -27,7 +29,14 @@ export {
   localizedFrontmatter,
 } from './segmentation.js';
 export { mask, allTokensPresent, expectedTokens, TOKENS } from './masking.js';
-export { cacheKey, glossaryVersion, sourceHash } from './cache-key.js';
+export {
+  TM_KEY_VERSION,
+  deriveCacheIdentity,
+  parseCacheKey,
+  cacheKey,
+  glossaryVersion,
+  sourceHash,
+} from './cache-key.js';
 export {
   createCacheDriver,
   createCacheDrivers,
@@ -77,3 +86,37 @@ export { withRetry, isRetryable, CallBudget, mapLimit } from './limits.js';
 export type { RetryOptions } from './limits.js';
 export { resolveFieldPaths, getPath, setPath, cloneFrontmatter } from './frontmatter-paths.js';
 export type { FieldMatch } from './frontmatter-paths.js';
+export {
+  SnapshotError,
+  SNAPSHOT_LIMITS,
+  canonicalizeJcs,
+  parseIJson,
+  readLocalJsonSnapshot,
+  sha256Digest,
+} from './snapshot/index.js';
+export type {
+  JsonPrimitive,
+  JsonValue,
+  LocalJsonSnapshot,
+  LocalJsonSnapshotEntry,
+  LocalJsonSnapshotRequest,
+  PortablePath,
+  Sha256Digest,
+  SnapshotErrorCode,
+  SnapshotLimits,
+} from './snapshot/index.js';
+export {
+  BrandMemoryError,
+  loadBrandMemory,
+} from './brand-memory/index.js';
+export type {
+  BrandMemoryErrorCode,
+  DeepReadonly,
+  LoadBrandMemoryInput,
+  LoadedBrandMemory,
+} from './brand-memory/index.js';
+export { resolveBrandContext } from './context-resolution/index.js';
+export type {
+  ResolveBrandContextInput,
+  ResolvedBrandContextResult,
+} from './context-resolution/index.js';

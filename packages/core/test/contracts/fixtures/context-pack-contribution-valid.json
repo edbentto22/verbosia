@@ -1,0 +1,13 @@
+{
+  "fixtureVersion": "1.0.0",
+  "schemaId": "https://schemas.verbosia.dev/contracts/v1/context-pack-contribution.schema.json",
+  "caseId": "context-pack-contribution/valid",
+  "valid": true,
+  "instance": {
+    "schemaVersion": "1.0.0", "packId": "pt-br-basics", "version": "1.0.0", "name": "Portuguese basics", "description": "Editorial guidance.",
+    "license": { "spdxId": "CC-BY-4.0", "uri": "https://creativecommons.org/licenses/by/4.0/" },
+    "locales": [{ "locale": "pt-BR", "language": "pt", "writingDirection": "ltr", "terminologySet": [], "requiredReviewLevels": ["high"] }],
+    "rules": [], "references": [],
+    "tests": [{ "caseId": "baseline", "locale": "pt-BR", "ruleRefs": [], "expectedEffect": "informational" }]
+  }
+}

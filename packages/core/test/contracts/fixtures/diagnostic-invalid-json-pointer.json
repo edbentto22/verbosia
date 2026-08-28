@@ -1,0 +1,5 @@
+{
+  "fixtureVersion": "1.0.0", "schemaId": "https://schemas.verbosia.dev/contracts/v1/diagnostic.schema.json", "caseId": "diagnostic/json-pointer", "valid": false,
+  "instance": { "severityRank": 2, "severity": "error", "code": "CONTRACT_SCHEMA_INVALID", "relativePath": "brand-memory.json", "jsonPointer": "/claims/~2", "claimId": "", "evidenceId": "", "message": "Invalid pointer.", "remediation": "Use RFC 6901 escaping." },
+  "expected": { "keyword": "pattern", "instancePath": "/jsonPointer" }
+}

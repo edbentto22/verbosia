@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.verbosia.dev/contracts/v1/context-pack-contribution.schema.json",
+  "title": "ContextPackContribution",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SchemaVersion" },
+    "packId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+    "version": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/SemVer" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 300 },
+    "description": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "license": { "$ref": "#/$defs/ContextPackLicense" },
+    "locales": { "type": "array", "items": { "$ref": "#/$defs/LocaleProfile" }, "minItems": 1, "uniqueItems": true },
+    "rules": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/policy-rule.schema.json" }, "uniqueItems": true },
+    "references": { "type": "array", "items": { "$ref": "#/$defs/ContextPackReference" }, "uniqueItems": true },
+    "tests": { "type": "array", "items": { "$ref": "#/$defs/ContextPackTest" }, "minItems": 1, "uniqueItems": true }
+  },
+  "required": ["schemaVersion", "packId", "version", "name", "description", "license", "locales", "rules", "references", "tests"],
+  "$defs": {
+    "ContextPackLicense": {
+      "title": "ContextPackLicense",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "spdxId": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "uri": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/AbsoluteUri" }
+      },
+      "required": ["spdxId", "uri"]
+    },
+    "ContextPackReference": {
+      "title": "ContextPackReference",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "referenceId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "kind": { "type": "string", "enum": ["evidence", "hypothesis"] },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "uri": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/AbsoluteUri" }
+      },
+      "required": ["referenceId", "kind", "title", "uri"]
+    },
+    "ContextPackTest": {
+      "title": "ContextPackTest",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "caseId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "locale": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Bcp47Tag" },
+        "ruleRefs": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/RuleRef" }, "uniqueItems": true },
+        "expectedEffect": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/RuleEffect" }
+      },
+      "required": ["caseId", "locale", "ruleRefs", "expectedEffect"]
+    },
+    "LocaleProfile": {
+      "title": "LocaleProfile",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "locale": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/Bcp47Tag" },
+        "language": { "type": "string", "minLength": 2, "maxLength": 8, "pattern": "^[A-Za-z]+$" },
+        "writingDirection": { "type": "string", "enum": ["ltr", "rtl"] },
+        "terminologySet": { "type": "array", "items": { "$ref": "#/$defs/LocaleTerm" }, "uniqueItems": true },
+        "requiredReviewLevels": { "type": "array", "items": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/EditorialRisk" }, "uniqueItems": true },
+        "region": { "type": "string", "minLength": 2, "maxLength": 3 },
+        "script": { "type": "string", "pattern": "^[A-Z][a-z]{3}$" },
+        "units": { "type": "string", "enum": ["metric", "us", "uk"] },
+        "dateFormat": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "searchIntentHints": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 500 }, "uniqueItems": true }
+      },
+      "required": ["locale", "language", "writingDirection", "terminologySet", "requiredReviewLevels"]
+    },
+    "LocaleTerm": {
+      "title": "LocaleTerm",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "termId": { "$ref": "https://schemas.verbosia.dev/contracts/v1/common.schema.json#/$defs/PortableId" },
+        "preferred": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "avoid": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 300 }, "uniqueItems": true }
+      },
+      "required": ["termId", "preferred", "avoid"]
+    }
+  },
+  "examples": [
+    {
+      "schemaVersion": "1.0.0",
+      "packId": "pt-br-editorial-basics",
+      "version": "1.0.0",
+      "name": "Portuguese editorial basics",
+      "description": "Provider-neutral terminology and review guidance.",
+      "license": { "spdxId": "CC-BY-4.0", "uri": "https://creativecommons.org/licenses/by/4.0/" },
+      "locales": [{ "locale": "pt-BR", "language": "pt", "writingDirection": "ltr", "terminologySet": [], "requiredReviewLevels": ["high", "critical"], "region": "BR", "units": "metric", "currency": "BRL" }],
+      "rules": [],
+      "references": [{ "referenceId": "style-source", "kind": "hypothesis", "title": "Community style hypothesis", "uri": "https://example.com/style" }],
+      "tests": [{ "caseId": "pt-br-baseline", "locale": "pt-BR", "ruleRefs": [], "expectedEffect": "informational" }]
+    }
+  ]
+}

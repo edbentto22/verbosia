@@ -8,6 +8,9 @@
   "license": "MIT",
   "scripts": {
     "build": "pnpm -r --filter \"./packages/*\" build",
+    "contracts:check": "pnpm --filter @verbosia/core contracts:check",
+    "contracts:generate": "pnpm --filter @verbosia/core contracts:generate",
+    "contracts:test": "vitest run packages/core/test/contracts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "pnpm -r --filter \"./packages/*\" typecheck"

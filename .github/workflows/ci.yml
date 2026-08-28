@@ -31,3 +31,24 @@ jobs:
         run: |
           node ../../packages/cli/dist/cli.js status
           node ../../packages/cli/dist/cli.js translate --dry-run
+
+  contract-probe:
+    name: Contract probe (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm contracts:check
+      - run: pnpm --filter @verbosia/core build
+      - run: pnpm contracts:test
